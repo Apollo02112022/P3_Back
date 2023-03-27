@@ -21,18 +21,18 @@ public class AnnouncementController {
 //CREATE
     @PostMapping("/offer-a-barter") 
 public Announcement createAnnouncement(@RequestBody Announcement announcement){
-    // @RequestBody sert a récuperer les information de AnnouncreateAnnouncement
+    // @RequestBody sert a récuperer les information de announcement
     return announcementRepository.save(announcement);
 }
 //READ
-@GetMapping("/barters") // api/AnnouncreateAnnouncements GET Liste des utilisateurs
-public List<Announcement> findAllAnnouncreateAnnouncement(){
+@GetMapping("/barters") // api/Announcements GET Liste des annonces
+public List<Announcement> findAllAnnouncement(){
 
     return announcementRepository.findAll();
 }
 //UPDATE
-@PutMapping("/barters/{id}") // api/AnnouncreateAnnouncements/:AnnouncreateAnnouncementsId PUT Mettre à jours un utilisateur
-public Announcement UpdateAnnouncreateAnnouncement(@PathVariable Long id, @RequestBody Announcement announcement){
+@PutMapping("/barters/{id}") // api/Announcements/:AnnouncementsId PUT Mettre à jours une annonce
+public Announcement UpdateAnnouncement(@PathVariable Long id, @RequestBody Announcement announcement){
 
     Announcement announcementToUpdate = announcementRepository.findById(id).get();
     announcementToUpdate.setAnnouncement_picture(announcement.getAnnouncement_picture());
@@ -40,7 +40,7 @@ public Announcement UpdateAnnouncreateAnnouncement(@PathVariable Long id, @Reque
     return announcementRepository.save(announcementToUpdate);
 }
 //DELETE
-@DeleteMapping("/barters/{id}") //api/users/:usersId DELETE supprime un utilisateur
+@DeleteMapping("/barters/{id}") //api/users/:usersId DELETE supprime une annonce
 public boolean deleteUser(@PathVariable Long id){
    announcementRepository.deleteById(id);
    return true;

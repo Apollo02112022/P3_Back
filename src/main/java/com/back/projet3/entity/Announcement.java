@@ -10,7 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import lombok.Data;
 
 @Data 
-@Entity //Table User
+@Entity //Table Announcement
 @Table(name="announcement")
 public class Announcement {
     @Id

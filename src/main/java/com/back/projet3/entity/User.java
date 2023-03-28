@@ -4,6 +4,11 @@ import javax.persistence.*;
 
 import lombok.Data;
 
+import java.util.List;
+import java.util.ArrayList;
+
+import com.back.projet3.entity.Announcement;
+
 //@Data fait automatiquement les getter et setter via lombok (dependence)
 @Data 
 @Entity //Table User
@@ -22,8 +27,13 @@ public class User {
     private int county ;
     private String picture ;
 
-    @ManyToOne
-    @JoinColumn(name="announcement_id") 
-    private Announcement announcement;
+    @OneToMany(mappedBy = "user")
+    private List<Announcement> announcements;
+
+    @ManyToMany
+    @JoinTable(name = "favorite",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inversionJoinColumns = @JoinColumn(name = "announcement_id"))
+    private List<Announcement> announcements = new ArrayList<>();
 
 }

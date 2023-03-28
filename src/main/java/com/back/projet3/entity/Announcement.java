@@ -1,13 +1,13 @@
 package com.back.projet3.entity;
 
 import java.sql.Timestamp;
-
-
 import javax.persistence.*;
-
 import org.hibernate.annotations.CreationTimestamp;
-
 import lombok.Data;
+
+
+
+
 
 @Data 
 @Entity //Table Announcement
@@ -19,11 +19,5 @@ public class Announcement {
     private String announcement_picture;
     private String description;
     @CreationTimestamp
-    private Timestamp create_date;
-
-
-
-
-
-    
+    private Timestamp create_date;   
 }

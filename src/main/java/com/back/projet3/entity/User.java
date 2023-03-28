@@ -10,7 +10,6 @@ import lombok.Data;
 @Table(name="user")
 public class User {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,6 +22,8 @@ public class User {
     private int county ;
     private String picture ;
 
-
+    @ManyToOne
+    @JoinColumn(name="announcement_id") 
+    private Announcement announcement;
 
 }

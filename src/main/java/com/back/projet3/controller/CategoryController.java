@@ -22,7 +22,7 @@ public class CategoryController {
     @GetMapping("/announcement/{category}") // api/AnnouncreateCategorys GET Liste des utilisateurs
     public List<Category> findAllCategory(){
 
-        return categoryRepository.findAll(category);
+        return categoryRepository.findAll();
     }
 
 }

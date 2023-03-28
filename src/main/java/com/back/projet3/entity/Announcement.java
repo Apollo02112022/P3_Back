@@ -5,9 +5,7 @@ import javax.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import lombok.Data;
 
-
-
-
+import java.util.List;
 
 @Data 
 @Entity //Table Announcement
@@ -19,5 +17,9 @@ public class Announcement {
     private String announcement_picture;
     private String description;
     @CreationTimestamp
-    private Timestamp create_date;   
+    private Timestamp create_date;  
+    
+    @OneToMany(mappedBy = "announcement")
+    private List<User> users;
+
 }

@@ -5,6 +5,8 @@ import org.springframework.stereotype.Repository;
 
 import com.back.projet3.entity.Announcement;
 
+import com.back.projet3.entity.Category;
+
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long>{

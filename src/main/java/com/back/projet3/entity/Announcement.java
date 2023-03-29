@@ -36,5 +36,8 @@ public class Announcement {
     private List<User> user_answers = new ArrayList<>();
      // => On liste les utilisateurs qui ont créé des réponses.
 
+    @OneToMany(mappedBy = "category")
+    private List<Announcement> category;
+
 
 }

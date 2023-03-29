@@ -2,6 +2,8 @@ package com.back.projet3.entity;
 
 import javax.persistence.*;
 
+import com.back.projet3.repository.NotificationRepository;
+
 import lombok.Data;
 
 import java.util.List;
@@ -56,5 +58,11 @@ public class User {
     // => On liste les annonces qui ont une notification.
 
 // <---------->
+
+    @OneToMany(mappedBy="notification")
+    private List<Notification>user_notification;
+    // => On liste les notifications reçu par les utilisateurs qui ont créer l'annonce.
+
+ 
 
 }

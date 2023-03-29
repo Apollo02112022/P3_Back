@@ -7,7 +7,7 @@ import lombok.Data;
 import java.util.List;
 import java.util.ArrayList;
 
-
+// import com.back.projet3.entity.Announcement;
 
 //@Data fait automatiquement les getter et setter via lombok (dependence)
 @Data 
@@ -30,10 +30,31 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Announcement> userAnnouncements;
 
+// <----- Relation Many to One concernant les tables user et announcement ----->
+
     @ManyToMany
     @JoinTable(name = "favorite",
-        joinColumns = @JoinColumn(name = "user_id"),
-        inverseJoinColumns = @JoinColumn(name = "announcement_id"))
-    private List<Announcement> favoriteAnnouncements = new ArrayList<>();
+         joinColumns = @JoinColumn(name = "user_id"),
+         inverseJoinColumns = @JoinColumn(name = "announcement_id"))
+    private List<Announcement> favorites = new ArrayList<>();
+    // => On liste les annonces qui sont en favori.
+
+// <----- Relation Many to Many concernant les tables user, announcement et notification ----->
+
+    @ManyToMany
+    @JoinTable(name = "answer",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "announcement_id"))
+    private List<Announcement> answers = new ArrayList<>();
+    // => On liste les annonces qui ont une réponse.
+
+    @ManyToMany
+    @JoinTable(name = "answer",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "notification_id"))
+    private List<Announcement> notifications = new ArrayList<>();
+    // => On liste les annonces qui ont une notification.
+
+// <---------->
 
 }

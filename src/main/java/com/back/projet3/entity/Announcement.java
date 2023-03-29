@@ -8,7 +8,7 @@ import lombok.Data;
 import java.util.List;
 import java.util.ArrayList;
 
-
+// import com.back.projet3.entity.User;
 
 @Data 
 @Entity //Table Announcement
@@ -28,7 +28,13 @@ public class Announcement {
     @JoinColumn(name="user_id") 
     private User user;
 
-    @ManyToMany(mappedBy = "announcement")
-    private List<User> users = new ArrayList<>();
+    @ManyToMany(mappedBy = "favorites")
+    private List<User> user_favorites = new ArrayList<>();
+    // => On liste les utilisateurs qui ont des favoris.
+
+    @ManyToMany(mappedBy = "answers")
+    private List<User> user_answers = new ArrayList<>();
+     // => On liste les utilisateurs qui ont créé des réponses.
+
 
 }

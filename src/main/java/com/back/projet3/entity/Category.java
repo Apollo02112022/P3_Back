@@ -22,6 +22,10 @@ public class Category {
     private boolean other;
     private boolean batch;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
 
 
 

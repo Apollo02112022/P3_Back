@@ -21,8 +21,9 @@ public class Notification {
     private List<User> user_answers = new ArrayList<>();
      // => On liste les utilisateurs qui répondent à des annonces.
 
-    @OneToMany(mappedBy="notification")
-    private List<User>user_notifications;
-     // => On liste les utilistateurs qui reçoivent des notifications.
+     @ManyToOne
+     @JoinColumn(name="user_id")
+     private Notification notification;
+     // => on joint la colonne user à notification.
 
 }

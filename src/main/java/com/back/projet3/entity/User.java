@@ -59,9 +59,10 @@ public class User {
 
 // <---------->
 
-    @ManyToOne
-    @JoinColumn(name="notification_id")
-    private Notification notification;
-    // => on joint la colonne notification à user.
+    @OneToMany(mappedBy="notification")
+    private List<Notification>user_notification;
+    // => On liste les notifications reçu par les utilisateurs qui ont créer l'annonce.
+
+ 
 
 }

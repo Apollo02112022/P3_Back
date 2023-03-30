@@ -1,7 +1,7 @@
 package com.back.projet3.entity;
 
 import java.sql.Timestamp;
-
+import java.util.*;
 
 import javax.persistence.*;
 
@@ -22,9 +22,9 @@ public class Category {
     private boolean other;
     private boolean batch;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
+    @OneToMany(mappedBy = "category")
+    private List<Announcement> category;
+
 
 
 

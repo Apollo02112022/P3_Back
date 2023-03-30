@@ -39,4 +39,5 @@ public class Announcement {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+
 }

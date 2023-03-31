@@ -3,6 +3,9 @@ package com.back.projet3.entity;
 import java.sql.Timestamp;
 import javax.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 
 import java.util.List;
@@ -36,7 +39,8 @@ public class Announcement {
     private List<User> user_answers = new ArrayList<>();
      // => On liste les utilisateurs qui ont créé des réponses.
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "category_id")
+    @JsonIgnore
     private Category category;
 }

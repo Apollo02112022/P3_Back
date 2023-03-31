@@ -1,12 +1,10 @@
 package com.back.projet3.entity;
 
-import java.sql.Timestamp;
 import java.util.*;
 
 import javax.persistence.*;
-import javax.persistence.Enumerated;
 
-import org.hibernate.annotations.CreationTimestamp;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 
@@ -20,6 +18,7 @@ public class Category {
     private String genre;
 
     @OneToMany(mappedBy = "category")
+    @JsonIgnore
     private List<Announcement> listCategory;
 
 }

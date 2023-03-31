@@ -2,8 +2,6 @@ package com.back.projet3.entity;
 
 import javax.persistence.*;
 
-import com.back.projet3.repository.NotificationRepository;
-
 import lombok.Data;
 
 import java.util.List;

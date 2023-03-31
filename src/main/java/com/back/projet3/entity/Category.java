@@ -17,7 +17,7 @@ public class Category {
     private Long id;
     private String genre;
 
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "category",cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Announcement> listCategory;
 

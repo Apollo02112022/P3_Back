@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.back.projet3.entity.Announcement;
@@ -25,10 +26,10 @@ public class AnnouncementController {
     private AnnouncementRepository announcementRepository;
     @Autowired
     private CategoryRepository categoryRepository;
-
+    
     // CREATE
-    @PostMapping("/offer-a-barter/{categoryid}")
-    public Announcement createAnnouncement(@RequestBody Announcement announcement,@PathVariable Long categoryid) {
+    @PostMapping("/offer-a-barter")
+    public Announcement createAnnouncement(@RequestBody Announcement announcement,@RequestParam Long categoryid,@RequestParam Long user) {
         // @RequestBody sert a récuperer les information de announcement
         Announcement newAnnouncement = new Announcement();
         Optional<Category> category = categoryRepository.findById(categoryid);
@@ -36,7 +37,7 @@ public class AnnouncementController {
             System.out.println("coucou"+category.get().getGenre());
             Category newCategory = category.get();
             newAnnouncement.setCategory(newCategory);
-            newAnnouncement.setDescription("announcement.getDescription()");
+            newAnnouncement.setDescription(announcement.getDescription());
         }
         // Optional<Announcement> announcementPost = announcementRepository
         // announcement.setCategory(category.get());

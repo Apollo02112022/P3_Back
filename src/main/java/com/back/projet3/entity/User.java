@@ -2,6 +2,7 @@ package com.back.projet3.entity;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
 
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 @Data 
 @Entity //Table User
 @Table(name="user")
+@JsonIgnoreProperties({"userAnnouncements", "userFavorites", "userAnswers"})
 public class User {
 
     @Id
@@ -28,15 +30,15 @@ public class User {
     private int county ;
     private String picture ;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy="user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Announcement> userAnnouncements;
 
 // <----- Relation Many to One concernant les tables user et announcement ----->
 
     @ManyToMany
     @JoinTable(name = "favorite",
-         joinColumns = @JoinColumn(name = "user_id"),
-         inverseJoinColumns = @JoinColumn(name = "announcement_id"))
+         joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+         inverseJoinColumns = @JoinColumn(name = "announcement_id", referencedColumnName = "id"))
     private List<Announcement> favorites = new ArrayList<>();
     // => On liste les annonces qui sont en favori.
 
@@ -44,15 +46,15 @@ public class User {
 
     @ManyToMany
     @JoinTable(name = "answer",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "announcement_id"))
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "announcement_id", referencedColumnName = "id"))
     private List<Announcement> answers = new ArrayList<>();
     // => On liste les annonces qui ont une réponse.
 
     @ManyToMany
     @JoinTable(name = "answer",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "notification_id"))
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "notification_id", referencedColumnName = "id"))
     private List<Announcement> notifications = new ArrayList<>();
     // => On liste les annonces qui ont une notification.
 

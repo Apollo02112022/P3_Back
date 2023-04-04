@@ -42,6 +42,24 @@ public List<User> findAllUser(){
     return userRepository.findAll();
 }
 
+@GetMapping("/test") // api/users GET Liste des utilisateurs
+public String test(){
+
+    return "ça roule ma poule";
+}
+
+@GetMapping("/failed") // api/users GET Liste des utilisateurs
+public String failed(){
+
+    return "Trou d'cul";
+}
+
+
+@GetMapping("/perform_logout") // api/users GET Liste des utilisateurs
+public String logout(){
+
+    return "Déco";
+}
 
 @GetMapping("/users/{id}/profil") // api/users/{id}/profil GET Détails d’un utilisateur
 public User findUser(@PathVariable Long id){

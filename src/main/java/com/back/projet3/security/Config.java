@@ -23,12 +23,18 @@ public class Config {
             try {
                 authz
                     .antMatchers("/barters","/Accueil").permitAll()
-                    .antMatchers("/").hasRole("ADMIN") /*L'adminisatrateur bénéficie de tous les droits d'accès.*/
+                    .antMatchers("/*").hasRole("ADMIN") /*L'adminisatrateur bénéficie de tous les droits d'accès.*/
                 	.antMatchers("/users/{id}/profil", "/offer-a-barter", "/barters/{id}", "/proposal_deal",
-                     "/notifications", "/notifications/{id}").hasRole("USER") /*L'utilisateur pourra accèder à tous les liens répertoriés ici.*/
+                     "/notifications", "/notifications/{id}", "/test").hasRole("USER") 
+                     /*L'utilisateur pourra accèder à tous les liens répertoriés ici.*/
                     .anyRequest().authenticated()
                     .and()
                     .formLogin()
+                    .defaultSuccessUrl("/test", true)
+                    .failureUrl("/failed?error=true")
+                    .and()
+                    .logout()
+                    .logoutUrl("/perform_logout")
                     .and()
                     .httpBasic();
             } catch (Exception e) {

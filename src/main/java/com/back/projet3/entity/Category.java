@@ -1,11 +1,11 @@
 package com.back.projet3.entity;
 
-import java.sql.Timestamp;
 import java.util.*;
 
 import javax.persistence.*;
 
-import org.hibernate.annotations.CreationTimestamp;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 
@@ -16,14 +16,11 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private boolean fruits;
-    private boolean vegetables;
-    private boolean tin_can_jars;
-    private boolean other;
-    private boolean batch;
+    private String genre;
 
-    @OneToMany(mappedBy = "category")
-    private List<Announcement> category;
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Announcement> announcementCategory;
 
 
 

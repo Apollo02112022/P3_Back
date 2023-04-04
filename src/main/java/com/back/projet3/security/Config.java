@@ -23,10 +23,10 @@ public class Config {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 	    
-        http.authorizeHttpRequests((authz) -> {
+        http.authorizeRequests((authz) -> {
             try {
                 authz
-                    .antMatchers("/barters").permitAll()
+                    .antMatchers("/barters","/Accueil").permitAll()
                     .antMatchers("/").hasRole("ADMIN") /*L'adminisatrateur bénéficie de tous les droits d'accès.*/
                 	.antMatchers("/users/{id}/profil", "/offer-a-barter", "/barters/{id}", "/proposal_deal",
                      "/notifications", "/notifications/{id}").hasRole("USER") /*L'utilisateur pourra accèder à tous les liens répertoriés ici.*/

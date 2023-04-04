@@ -8,14 +8,13 @@ import org.springframework.web.bind.annotation.*;
 import com.back.projet3.entity.User;
 import com.back.projet3.repository.UserRepository;
 
-// import com.back.projet3.security.Config;
 
 @RestController
 public class UserController {
 
 @Autowired
 private UserRepository userRepository;
-    
+   
 @PostMapping("/signup") //api/signup POST Permet l’inscription
 public User createUser(@RequestBody User user){
     // @RequestBody sert a récuperer les information de user

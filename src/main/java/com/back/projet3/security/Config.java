@@ -22,10 +22,10 @@ public class Config {
         http.authorizeRequests((authz) -> {
             try {
                 authz
-                    .antMatchers("/barters","/Accueil").permitAll()
-                    .antMatchers("/").hasRole("ADMIN") /*L'adminisatrateur bénéficie de tous les droits d'accès.*/
-                	.antMatchers("/users/{id}/profil", "/offer-a-barter", "/barters/{id}", "/proposal_deal",
-                     "/notifications", "/notifications/{id}").hasRole("USER") /*L'utilisateur pourra accèder à tous les liens répertoriés ici.*/
+                    .antMatchers("/barters*","/Home","/").permitAll()
+                	.antMatchers("/users/{user.id}/profil", "/offer-a-barter*", "/barters/*", "/proposal_deal",
+                    "/notifications", "/notifications/{user.id}").hasRole("USER") /*L'utilisateur pourra accèder à tous les liens répertoriés ici.*/
+                    .antMatchers("/*").hasRole("ADMIN") /*L'adminisatrateur bénéficie de tous les droits d'accès.*/
                     .anyRequest().authenticated()
                     .and()
                     .formLogin()

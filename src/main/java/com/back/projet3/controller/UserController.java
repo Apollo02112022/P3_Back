@@ -8,12 +8,13 @@ import org.springframework.web.bind.annotation.*;
 import com.back.projet3.entity.User;
 import com.back.projet3.repository.UserRepository;
 
+
 @RestController
 public class UserController {
 
 @Autowired
 private UserRepository userRepository;
-    
+   
 @PostMapping("/signup") //api/signup POST Permet l’inscription
 public User createUser(@RequestBody User user){
     // @RequestBody sert a récuperer les information de user
@@ -62,7 +63,6 @@ public boolean deleteUser(@PathVariable Long id){
    userRepository.deleteById(id);
    return true;
 }
-
 
 }
 

@@ -15,6 +15,7 @@ import java.util.ArrayList;
 @Data 
 @Entity //Table User
 @Table(name="user")
+// on utilise jsonignore pour ignorer les variables qui créent une boucle infinie
 @JsonIgnoreProperties({"userAnnouncements", "userFavorites", "userAnswers"})
 public class User {
 
@@ -64,6 +65,5 @@ public class User {
     private List<Notification>user_notification;
     // => On liste les notifications reçu par les utilisateurs qui ont créer l'annonce.
 
- 
 
 }

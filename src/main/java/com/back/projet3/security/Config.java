@@ -1,4 +1,4 @@
-package com.back.projet3.security.config;
+package com.back.projet3.security;
 
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.context.annotation.Configuration; 
@@ -27,7 +27,7 @@ public class Config {
             try {
                 authz
                     .antMatchers("/barters").permitAll()
-                    .antMatchers("/").hasRole("ADMIN").permitAll() /*L'adminisatrateur bénéficie de tous les droits d'accès.*/
+                    .antMatchers("/").hasRole("ADMIN") /*L'adminisatrateur bénéficie de tous les droits d'accès.*/
                 	.antMatchers("/users/{id}/profil", "/offer-a-barter", "/barters/{id}", "/proposal_deal",
                      "/notifications", "/notifications/{id}").hasRole("USER") /*L'utilisateur pourra accèder à tous les liens répertoriés ici.*/
                     .anyRequest().authenticated()

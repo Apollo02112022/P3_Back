@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import com.back.projet3.entity.User;
 import com.back.projet3.repository.UserRepository;
 
+// import com.back.projet3.security.Config;
+
 @RestController
 public class UserController {
 
@@ -62,7 +64,6 @@ public boolean deleteUser(@PathVariable Long id){
    userRepository.deleteById(id);
    return true;
 }
-
 
 }
 

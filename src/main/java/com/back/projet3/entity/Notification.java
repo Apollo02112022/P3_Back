@@ -21,8 +21,8 @@ public class Notification {
     private List<User> user_answers = new ArrayList<>();
      // => On liste les utilisateurs qui répondent à des annonces.
 
-     @ManyToOne
-     @JoinColumn(name="user_id")
+     @ManyToOne(fetch = FetchType.LAZY)
+     @JoinColumn(name="user_id", referencedColumnName = "id")
      private Notification notification;
      // => on joint la colonne user à notification.
 

@@ -28,7 +28,7 @@ public class Announcement {
     private Timestamp create_date;  
     
     @ManyToOne
-    @JoinColumn(name="user_id") 
+    @JoinColumn(name="user_id", referencedColumnName = "id") 
     private User user;
 
     @ManyToMany(mappedBy = "favorites")
@@ -39,8 +39,7 @@ public class Announcement {
     private List<User> user_answers = new ArrayList<>();
      // => On liste les utilisateurs qui ont créé des réponses.
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
-    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)//fetch récupère les données le lazy "soit paraisseux" fait que la récupération se fait à la demande
+    @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;
 }

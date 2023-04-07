@@ -17,6 +17,17 @@ public class Category {
     private Long id;
     private String genre;
 
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    // on ignore la variable "announcementCategory" pour éviter une boucles infinies
+    @JsonIgnore
+    private List<Announcement> announcementCategory;
+
+
+
+
+
+
+
     @OneToMany(mappedBy = "category",cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Announcement> listCategory;

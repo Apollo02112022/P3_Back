@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.back.projet3.entity.Announcement;
 import com.back.projet3.entity.Category;
+import com.back.projet3.entity.User;
 import com.back.projet3.repository.AnnouncementRepository;
 import com.back.projet3.repository.CategoryRepository;
+import com.back.projet3.repository.UserRepository;
 
 @RestController
 public class AnnouncementController {
@@ -26,23 +28,25 @@ public class AnnouncementController {
     private AnnouncementRepository announcementRepository;
     @Autowired
     private CategoryRepository categoryRepository;
-    
+    @Autowired
+    private UserRepository userRepository;
+
     // CREATE
     @PostMapping("/offer-a-barter")
-    public Announcement createAnnouncement(@RequestBody Announcement announcement,@RequestParam Long categoryid,@RequestParam Long user) {
-        // @RequestBody sert a récuperer les information de announcement
-        Announcement newAnnouncement = new Announcement();
-        Optional<Category> category = categoryRepository.findById(categoryid);
-        if (category.isPresent()){
-            System.out.println("coucou"+category.get().getGenre());
-            Category newCategory = category.get();
-            newAnnouncement.setCategory(newCategory);
-            newAnnouncement.setDescription(announcement.getDescription());
-        }
-        // Optional<Announcement> announcementPost = announcementRepository
-        // announcement.setCategory(category.get());
-        System.out.println("@@@"+categoryid);
-        return announcementRepository.save(newAnnouncement);
+    public Announcement createAnnouncement(@RequestBody Announcement announcement,
+            @RequestParam Long categoryid, @RequestParam Long userid) {
+
+        // récupérer la catégorie correspondant à l'ID
+        Category newCategory = categoryRepository.findById(categoryid).get();
+
+        // récupérer l'utilisateur correspondant à l'ID
+        User newUser = userRepository.findById(userid).get();
+
+        // définir l'utilisateur et la catégorie pour l'annonce
+        announcement.setCategory(newCategory);
+        announcement.setUser(newUser);
+
+        return announcementRepository.save(announcement);
     }
 
     // READ
@@ -51,7 +55,18 @@ public class AnnouncementController {
 
         return announcementRepository.findAll();
     }
+    @GetMapping("/barters/{categoryId}")
+    public List<Announcement> getAnnouncementsByCategory(@PathVariable Long categoryId) {
+        Category category = new Category();
+        category.setId(categoryId);
+        return announcementRepository.findByCategory(category);
+    }
+    
+    @GetMapping("/barters/{id}/view") // api/Announcements GET Liste des annonces
+    public Announcement getAnnouncementById(@PathVariable Long id) {
+        return announcementRepository.findById(id).get();
 
+    }
     // UPDATE
     @PutMapping("/barters/{id}") // api/Announcements/:AnnouncementsId PUT Mettre à jours une annonce
     public Announcement UpdateAnnouncement(@PathVariable Long id, @RequestBody Announcement announcement) {

@@ -1,13 +1,12 @@
 package com.back.projet3.controller;
 
 import java.util.List;
-
+import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import com.back.projet3.entity.User;
 import com.back.projet3.repository.UserRepository;
-
+import org.springframework.http.HttpStatus;
 
 @RestController
 public class UserController {
@@ -23,9 +22,10 @@ public User createUser(@RequestBody User user){
 
 //A modifier pour faire une connection sécurisé
 @PostMapping("/login") // api/login POST Permet la connexion
-public User loginUser(User user){
-
-    return user;
+public ResponseEntity loginUser(User user){
+    HashMap<String, String> map = new HashMap<String, String>();
+    map.put("user", "sam");
+    return new ResponseEntity<>(map, HttpStatus.OK);
 }
 
 //A modifier pour faire une connection sécurisé

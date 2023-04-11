@@ -1,16 +1,11 @@
 package com.back.projet3.security;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-
 import com.back.projet3.dto.RegisterDto;
-
 import io.jsonwebtoken.Claims;
 /* 
 Voir pom.xml au niveau de 

@@ -1,11 +1,9 @@
 package com.back.projet3.controller;
 
 import java.util.List;
-import java.util.Optional;
-
-import javax.persistence.Id;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +20,9 @@ import com.back.projet3.repository.AnnouncementRepository;
 import com.back.projet3.repository.CategoryRepository;
 import com.back.projet3.repository.UserRepository;
 
+
+//annotation crossorigin pour l'activation de CORS  Cross-origin resource sharing = partage des ressources entre origines multiples »
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 public class AnnouncementController {
     @Autowired
@@ -31,6 +32,7 @@ public class AnnouncementController {
     @Autowired
     private UserRepository userRepository;
 
+    
     // CREATE
     @PostMapping("/offer-a-barter")
     public Announcement createAnnouncement(@RequestBody Announcement announcement,

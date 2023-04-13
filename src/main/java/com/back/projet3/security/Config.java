@@ -21,23 +21,23 @@ public class Config {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 	    http.cors().and().csrf().disable();
-        http.authorizeRequests((authz) -> {
-            try {
-                authz
-                    .antMatchers("/barters","/Home","/offer-a-barter","/").permitAll()
-                	.antMatchers("/users/{user.id}/profil", "/offer-a-barter*", "/barters/*", "/proposal_deal",
-                    "/notifications", "/notifications/{user.id}").hasRole("USER") /*L'utilisateur pourra accèder à tous les liens répertoriés ici.*/
-                    .antMatchers("/**").hasRole("ADMIN") /*L'adminisatrateur bénéficie de tous les droits d'accès.*/
-                    .anyRequest().authenticated()
-                    .and()
-                    .formLogin()
-                    .and()
-                    .httpBasic();
-            } catch (Exception e) {
+        // http.authorizeRequests((authz) -> {
+        //     try {
+        //         authz
+        //             .antMatchers("/barters","barters/*","/offer-a-barter","/").permitAll()
+        //         	.antMatchers("/users/{user.id}/profil", "/offer-a-barter*", "/proposal_deal",
+        //             "/notifications", "/notifications/{user.id}").hasRole("USER") /*L'utilisateur pourra accèder à tous les liens répertoriés ici.*/
+        //             // .antMatchers("/**").hasRole("ADMIN") /*L'adminisatrateur bénéficie de tous les droits d'accès.*/
+        //             .anyRequest().authenticated()
+        //             .and()
+        //             .formLogin()
+        //             .and()
+        //             .httpBasic();
+        //     } catch (Exception e) {
     
-                e.printStackTrace();
-            }
-        });
+        //         e.printStackTrace();
+        //     }
+        // });
   
         return http.build();
 

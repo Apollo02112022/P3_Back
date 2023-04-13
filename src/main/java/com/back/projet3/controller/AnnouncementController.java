@@ -57,17 +57,16 @@ public class AnnouncementController {
 
         return announcementRepository.findAll();
     }
-    @GetMapping("/barters/{categoryId}")
+    @GetMapping("/barters/category/{categoryId}")
     public List<Announcement> getAnnouncementsByCategory(@PathVariable Long categoryId) {
         Category category = new Category();
         category.setId(categoryId);
         return announcementRepository.findByCategory(category);
     }
     
-    @GetMapping("/barters/{id}/view") // api/Announcements GET Liste des annonces
+    @GetMapping("/barters/{id}")
     public Announcement getAnnouncementById(@PathVariable Long id) {
-        return announcementRepository.findById(id).get();
-
+        return announcementRepository.findById(id).orElse(null);
     }
     // UPDATE
     @PutMapping("/barters/{id}") // api/Announcements/:AnnouncementsId PUT Mettre à jours une annonce

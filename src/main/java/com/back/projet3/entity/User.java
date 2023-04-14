@@ -3,6 +3,7 @@ package com.back.projet3.entity;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.Data;
 
@@ -52,15 +53,17 @@ public class User {
     private List<Announcement> answers = new ArrayList<>();
     // => On liste les annonces qui ont une réponse.
 
-    @ManyToMany
-    @JoinTable(name = "answer",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "notification_id", referencedColumnName = "id"))
-    private List<Announcement> notifications = new ArrayList<>();
+    // @ManyToMany
+    // @JoinTable(name = "answer",
+    //         joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+    //         inverseJoinColumns = @JoinColumn(name = "notification_id", referencedColumnName = "id"))
+    // private List<Announcement> notifications = new ArrayList<>();
     // => On liste les annonces qui ont une notification.
 
 // <---------->
 
+//  C'est pour éviter une boucle infinie d'hibernate lorsqu'on récupère une notification
+    @JsonManagedReference(value ="user_notification")
     @OneToMany(mappedBy="notification")
     private List<Notification>user_notification;
     // => On liste les notifications reçu par les utilisateurs qui ont créer l'annonce.

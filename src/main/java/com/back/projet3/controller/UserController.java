@@ -1,6 +1,5 @@
 package com.back.projet3.controller;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +11,7 @@ import com.back.projet3.Dto.PasswordDto;
 import com.back.projet3.Dto.MailDto;
 import com.back.projet3.entity.User;
 import com.back.projet3.repository.UserRepository;
+
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -84,20 +84,24 @@ public class UserController {
         return true;
     }
 
+    @PostMapping("/users/{userid}/profil/check-mail")
+    public boolean checkUserPassword(@PathVariable Long userid, @RequestBody MailDto mailDto) {
+        // chercher si le mail existe déjà dans la bdd
+        return userRepository.existsByMail(mailDto.getMail());
+    }
+
     // users/userid/profil/update-password PUT Mettre à jours un mail utilisateur
     @PutMapping("/users/{userid}/profil/update-mail")
-    public MailDto UpdateUserMail(@PathVariable Long userid, @RequestBody MailDto mailDto) {
+    public User UpdateUserMail(@PathVariable Long userid, @RequestBody MailDto mailDto) {
         // Recherche de l'utilisateur dans la base de données.
         User userToUpdate = userRepository.findById(userid).get();
         // récuperation de mail transmis par RequestBody.
         String newMail = mailDto.getMail();
         // mise à jours du mail de l'utilisateur.
         userToUpdate.setMail(newMail);
-        //sauvegarde le nouveau mail dans la bdd  
-        userRepository.save(userToUpdate);
-        // renvoie le mail modifier
-        return new MailDto(userToUpdate.getMail()) ;
-        
+        //sauvegarde le nouveau mail dans la bdd  et
+        // renvoie l'utilisateur avec le mail modifier
+        return userRepository.save(userToUpdate);
     }
 
     // api/users/{userid}/profil DELETE supprime un utilisateur

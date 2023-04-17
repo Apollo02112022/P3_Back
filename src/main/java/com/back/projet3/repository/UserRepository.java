@@ -7,5 +7,9 @@ import com.back.projet3.entity.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
+
+    Object findByMail(String mail);
+
+    Object findByUsername(String username);
     
 }

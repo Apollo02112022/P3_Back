@@ -22,14 +22,18 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String lastname ;
-    private String firstname ;
-    private String mail ;
-    private String password ;
-    private String pseudo ;
-    private String city ;
-    private int county ;
-    private String picture ;
+    private String lastname;
+    private String firstname;
+    private String username;
+    
+    @Lob
+    private byte[] picture;
+
+    private String mail;
+    private String city;
+    private int county;
+    private String password;
+    
 
     @OneToMany(mappedBy="user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Announcement> userAnnouncements;
@@ -63,7 +67,6 @@ public class User {
 
     @OneToMany(mappedBy="notification")
     private List<Notification>user_notification;
-    // => On liste les notifications reçu par les utilisateurs qui ont créer l'annonce.
-
+    // => On liste les notifications reçues par les utilisateurs qui ont créé l'annonce.
 
 }

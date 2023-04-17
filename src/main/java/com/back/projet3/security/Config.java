@@ -59,9 +59,9 @@ public class Config {
         .and()
         .authorizeRequests()
         .antMatchers("/login")
-        .anyRequest().permitAll()
-        .and()
-        .formLogin();
+        .permitAll()
+        .anyRequest()
+        .authenticated();
 
     http.logout().logoutSuccessUrl("/logoutSuccessfully");
     // where to implement the middleware filter

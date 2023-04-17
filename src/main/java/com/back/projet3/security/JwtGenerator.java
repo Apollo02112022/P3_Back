@@ -3,9 +3,7 @@ package com.back.projet3.security;
 import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import com.back.projet3.dto.RegisterDto;
 import io.jsonwebtoken.Claims;
 /* 
 Voir pom.xml au niveau de 
@@ -30,19 +28,15 @@ public class JwtGenerator {
   @Autowired
   CustomUserDetails customUserDetails;
 
-  public String generateToken(RegisterDto user) {
+  public String generateToken(String username) {
 
     // claims.put("role", role); // add role claim
-
     // Map<String, String> claims = new HashMap<String, String>();
     // claims.put("role", "user");
-
-    String username = user.getUsername();
-
     // ADD_ROLE_TO_USER_AND_TOKEN
-    UserDetails userDetails = customUserDetails.loadUserByUsername(username);
+    // UserDetails userDetails = customUserDetails.loadUserByUsername(username);
     Claims claims = Jwts.claims().setSubject(username);
-    claims.put("role", userDetails.getAuthorities());
+    // claims.put("role", userDetails.getAuthorities());
     Date currentDate = new Date();
     // 30000 30 seconds en millliseconds
     Date expireDate = new Date(currentDate.getTime() + 30000000);

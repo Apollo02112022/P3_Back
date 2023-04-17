@@ -10,11 +10,10 @@ import com.back.projet3.entity.User;
 public interface UserRepository extends JpaRepository<User, Long> {
 
   Boolean existsByUsername(String username);
+  boolean existsByMail(String mail);
   User findUserByUsername(String username);
   Optional<User> findByMail(String mail);
   Optional<User> findByUsername(String username);
 }
 
-    boolean existsByMail(String mail);
-}
 

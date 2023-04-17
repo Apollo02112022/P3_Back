@@ -23,12 +23,6 @@ public class Config {
   @Autowired
   JwtEntryPoint jwtEntryPoint;
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable();
-  
-        return http.build();
-
   @Autowired
   JwtFilter jwtFilter;
 
@@ -50,30 +44,7 @@ public class Config {
      * Since we use the jwt token, we don't need the csrf token to be enabled so we
      * can disable it
      * 
-     */
-
-@Bean
-public WebMvcConfigurer corsConfigurer() {
-  // https://stackoverflow.com/questions/44697883/can-you-completely-disable-cors-support-in-spring
-  return new WebMvcConfigurer() {
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-      registry.addMapping("**")
-      .allowedOrigins("*")
-      .allowedMethods("*")
-      .allowCredentials(true);
-    }
-  };
-}
-
-
-
-
-    @Bean
-    public InMemoryUserDetailsManager userDetailsService() {
-    PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();   
-
-
+     */  
     /**
      * Une Session http sauvegarde des informations à propos d'un utilisateur
      * (client login state, for example, plus whatever else the Web application
@@ -106,21 +77,4 @@ public WebMvcConfigurer corsConfigurer() {
     return new BCryptPasswordEncoder();
   }
 
-
-  @Bean
-  public WebMvcConfigurer corsConfigurer() {
-    // https://stackoverflow.com/questions/44697883/can-you-completely-disable-cors-support-in-spring
-    return new WebMvcConfigurer() {
-      @Override
-      public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**").allowedOrigins("http://localhost:4200").allowedMethods("*");
-      }
-    };
-  }
 }
-
-    PasswordEncoder passwordEncoder() {
-      return new BCryptPasswordEncoder();
-    }
-
-} 

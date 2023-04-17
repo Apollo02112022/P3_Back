@@ -4,14 +4,13 @@ import java.util.*;
 
 import javax.persistence.*;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 
 @Data
-@Entity //Table Category
-@Table(name="category")
+@Entity // Table Category
+@Table(name = "category")
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,5 +28,8 @@ public class Category {
 
 
 
+    @OneToMany(mappedBy = "category",cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Announcement> listCategory;
 
 }

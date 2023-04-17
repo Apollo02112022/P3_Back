@@ -3,6 +3,7 @@ package com.back.projet3.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,9 @@ import com.back.projet3.repository.AnnouncementRepository;
 import com.back.projet3.repository.CategoryRepository;
 import com.back.projet3.repository.UserRepository;
 
+
+//annotation crossorigin pour l'activation de CORS  Cross-origin resource sharing = partage des ressources entre origines multiples »
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 public class AnnouncementController {
     @Autowired
@@ -28,6 +32,7 @@ public class AnnouncementController {
     @Autowired
     private UserRepository userRepository;
 
+    
     // CREATE
     @PostMapping("/offer-a-barter")
     public Announcement createAnnouncement(@RequestBody Announcement announcement,
@@ -52,17 +57,16 @@ public class AnnouncementController {
 
         return announcementRepository.findAll();
     }
-    @GetMapping("/barters/{categoryId}")
+    @GetMapping("/barters/category/{categoryId}")
     public List<Announcement> getAnnouncementsByCategory(@PathVariable Long categoryId) {
         Category category = new Category();
         category.setId(categoryId);
         return announcementRepository.findByCategory(category);
     }
     
-    @GetMapping("/barters/{id}/view") // api/Announcements GET Liste des annonces
+    @GetMapping("/barters/{id}")
     public Announcement getAnnouncementById(@PathVariable Long id) {
-        return announcementRepository.findById(id).get();
-
+        return announcementRepository.findById(id).orElse(null);
     }
     // UPDATE
     @PutMapping("/barters/{id}") // api/Announcements/:AnnouncementsId PUT Mettre à jours une annonce

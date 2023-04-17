@@ -65,6 +65,7 @@ public class JwtGenerator {
         .setSigningKey("secret")
         .parseClaimsJws(token)
         .getBody();
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" + claims.getSubject());
     return claims.getSubject();
   }
 

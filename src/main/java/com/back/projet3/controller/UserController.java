@@ -13,6 +13,7 @@ import com.back.projet3.repository.UserRepository;
 import com.back.projet3.security.JwtGenerator;
 import org.springframework.http.HttpStatus;
 import java.util.HashMap;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.http.HttpHeaders;
 
 
@@ -29,6 +30,24 @@ public class UserController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @GetMapping("/test")
+    public String getTest() {
+        return "test";
+    }
+
+    @GetMapping("/test2")
+    public String getTest2() {
+        return "authorization";
+    }
+
+    @GetMapping("/getToken")
+    public ResponseEntity<?> getToken() {
+        HashMap<String, String> map = new HashMap<String, String>();
+        String token = tokenGenerator.generateToken("MikeBADAS");
+        map.put("token", token);
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
     
     @PostMapping("/signup") //api/signup POST Permet l’inscription
     public User createUser(@RequestBody User user){
@@ -38,18 +57,28 @@ public class UserController {
 
     //A modifier pour faire une connection sécurisé
     @PostMapping("/login") // api/login POST Permet la connexion
-    public ResponseEntity<?> loginUser(User user){
+    public ResponseEntity<?> loginUser(@RequestBody User userDataFromFront){
+        // Création d'un map
         HashMap<String, String> map = new HashMap<String, String>();
-        String token = tokenGenerator.generateToken(user.getUsername());
-        map.put("user", "sam");
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", token);
-        return ResponseEntity.ok().headers(headers).body(map);
-
-
-        // map.put("token", token);
-        // map.put("user", "sam");
-        // return new ResponseEntity<>(map, HttpStatus.OK);
+        // Etape 1 Rechercher dans la base de données l'existance de l'utilisateur par son pseudo
+        User userInDb = userRepository.findUserByPseudo(userDataFromFront.getPseudo());
+        // S'il n'existe pas, renvoyer un bad request
+        if (userInDb == null) {
+            map.put("message", "L'utilisateur ne correspondent pas");
+            return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
+          }
+        // Etape 2 Rechercher dans la base de données la correspondance du mot de de passe de l'utilisateur 
+        String passwordFromFront = userDataFromFront.getPassword();
+          System.out.println(passwordFromFront + userDataFromFront.getPassword());
+        // S'ils correspondent, générer un token pour cet utilisateur
+        if (passwordFromFront.equals(userInDb.getPassword())) {
+            String token = tokenGenerator.generateToken(userDataFromFront.getPseudo());
+            map.put("token", token);
+            return new ResponseEntity<>(map, HttpStatus.OK);
+        } else {
+            map.put("message", "le mot de passe ne correspondent pas");
+            return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/users") // api/users GET Liste des utilisateurs

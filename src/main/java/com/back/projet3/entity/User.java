@@ -26,6 +26,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String lastname;
     private String firstname;
     private String username;
@@ -47,7 +48,6 @@ public class User {
     private String city;
     private int county;
     private String password;
-    
 
     @OneToMany(mappedBy="user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Announcement> userAnnouncements;

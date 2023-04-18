@@ -1,3 +1,5 @@
+// Ce fichier permet de gérer la compression et décompression des images.
+
 package com.back.projet3.util;
 
 import java.io.ByteArrayOutputStream;

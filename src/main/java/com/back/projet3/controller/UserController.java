@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import java.util.Optional;
+
+import javax.annotation.security.RolesAllowed;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -36,22 +39,12 @@ public class UserController {
     private PasswordEncoder passwordEncoder;
 
     @GetMapping("/test")
-    public String getTest() {
-        return "test";
-    }
-
-    @GetMapping("/test2")
-    public String getTest2() {
-        return "authorization";
-    }
-
-    @GetMapping("/getToken")
-    public ResponseEntity<?> getToken() {
+    public ResponseEntity<?> getTest() {
         HashMap<String, String> map = new HashMap<String, String>();
-        String token = tokenGenerator.generateToken("MikeBADAS");
-        map.put("token", token);
+        map.put("message", "test test test");
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
+
     
     // Création d'un nouvel utilisateur dans la base de données via le formulaire
     // d'inscription.
@@ -134,6 +127,7 @@ public class UserController {
         if (passwordFromFront.equals(userInDb.getPassword())) {
             String token = tokenGenerator.generateToken(userDataFromFront.getPseudo());
             map.put("token", token);
+            map.put("message", "Connexion réussie");
             return new ResponseEntity<>(map, HttpStatus.OK);
         } else {
             map.put("message", "le mot de passe ne correspondent pas");

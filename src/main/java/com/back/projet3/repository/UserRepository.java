@@ -1,6 +1,5 @@
 package com.back.projet3.repository;
 
-
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -14,8 +13,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
   User findUserByUsername(String username);
   User findUserByPseudo(String pseudo);
   User findUserByPassword(String password);
+  Object findByMail(String mail);
+  Object findByUsername(String username);
   Optional<User> findByMail(String mail);
   Optional<User> findByUsername(String username);
+
 }
-
-

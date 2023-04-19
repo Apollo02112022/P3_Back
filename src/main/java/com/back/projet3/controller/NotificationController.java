@@ -10,7 +10,7 @@ import com.back.projet3.entity.Notification;
 import com.back.projet3.repository.NotificationRepository;
 
 
-
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
     public class NotificationController {
     @Autowired

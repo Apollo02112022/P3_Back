@@ -56,8 +56,8 @@ public class Config {
         .and()
         .authorizeRequests()
         .antMatchers("/test", "/login")
-        .permitAll()
-        .anyRequest().authenticated();
+        .permitAll();
+        // .anyRequest().authenticated();
         // .and()
         // .formLogin()
         // .and()
@@ -80,7 +80,7 @@ public class Config {
   }
 
 
-    }
+    // }
    /* @Bean
     public WebMvcConfigurer corsConfigurer() {
     // https://stackoverflow.com/questions/44697883/can-you-completely-disable-cors-support-in-spring

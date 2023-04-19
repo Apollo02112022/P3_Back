@@ -17,7 +17,7 @@ public class UserDto {
     private Long id;
     private String lastname;
     private String firstname;
-    private String username;
+    private String pseudo;
     
     @Lob
     private MultipartFile picture;

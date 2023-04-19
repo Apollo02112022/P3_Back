@@ -29,7 +29,7 @@ public class User {
 
     private String lastname;
     private String firstname;
-    private String username;
+    private String pseudo;
     
     // @Lob est une annotation utilisée pour indiquer qu'un champ de l'entité correspondante doit
     //  être stocké sous forme de grand objet binaire (BLOB). Le mot "LOB" signifie "Large Object",

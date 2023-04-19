@@ -68,8 +68,8 @@ public class UserController {
         user.setLastname(lastname);
         String firstname = userDto.getFirstname();
         user.setFirstname(firstname);
-        String username = userDto.getUsername();
-        user.setUsername(username);
+        String pseudo = userDto.getPseudo();
+        user.setPseudo(pseudo);
         String city = userDto.getCity();
         user.setCity(city);
         int county = userDto.getCounty();
@@ -84,9 +84,9 @@ public class UserController {
                     HttpStatus.CONFLICT);
         }
 
-        if (userRepository.findByUsername(userDto.getUsername()) != null) {
+        if (userRepository.findByPseudo(userDto.getPseudo()) != null) {
             return new ResponseEntity<>(
-                    "Un utilisateur avec le nom d'utilisateur " + userDto.getUsername() + " existe déjà.",
+                    "Un utilisateur avec le nom d'utilisateur " + userDto.getPseudo() + " existe déjà.",
                     HttpStatus.CONFLICT);
         }
 

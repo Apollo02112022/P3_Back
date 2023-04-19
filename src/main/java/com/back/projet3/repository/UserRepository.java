@@ -8,12 +8,11 @@ import com.back.projet3.entity.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-  Boolean existsByUsername(String username);
+  Boolean existsByPseudo(String pseudo);
   boolean existsByMail(String mail);
-  User findUserByUsername(String username);
   User findUserByPseudo(String pseudo);
   User findUserByPassword(String password);
   Object findByMail(String mail);
-  Object findByUsername(String username);
+  Object findByPseudo(String pseudo);
 
 }

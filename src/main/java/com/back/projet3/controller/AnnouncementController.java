@@ -1,6 +1,7 @@
 package com.back.projet3.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -57,6 +58,13 @@ public class AnnouncementController {
 
         return announcementRepository.findAll();
     }
+
+    @GetMapping("/users/{userid}/barters") // user/:userid/barters GET Liste des annonces
+    public List<Announcement> findAnnouncementByUserId(@PathVariable Long userid) {
+        Optional<User> optionalUser = userRepository.findById(userid);
+         return optionalUser.get().getUserAnnouncements();
+    }
+
     @GetMapping("/barters/category/{categoryId}")
     public List<Announcement> getAnnouncementsByCategory(@PathVariable Long categoryId) {
         Category category = new Category();

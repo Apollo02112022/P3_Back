@@ -45,7 +45,7 @@ public class Config {
         .authenticationEntryPoint(jwtEntryPoint)
         .and()
         .authorizeRequests()
-        .antMatchers("/", "/barters", "/offer-a-barter", "/login", "/test")
+        .antMatchers("/", "/barters", "/login", "/signup")
         .permitAll()
         .anyRequest().authenticated();
 

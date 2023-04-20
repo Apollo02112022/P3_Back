@@ -38,10 +38,10 @@ public class JwtGenerator {
     Claims claims = Jwts.claims().setSubject(username);
     // claims.put("role", userDetails.getAuthorities());
     Date currentDate = new Date();
-    // 30000 30 seconds en millliseconds
-    Date expireDate = new Date(currentDate.getTime() + 3000);
+    // 24H en millliseconds
+    Date expireDate = new Date(currentDate.getTime() +  86400000);
     
-    System.out.println("@@@@@@@@@@@@@@@@@@@     " + expireDate.toString());
+    System.out.println("@@@@@@@@@@@@@@@@@@@    Date d'expiration " + expireDate.toString());
 
     // Implémentation à récupérer d'internet
     String token = Jwts.builder()

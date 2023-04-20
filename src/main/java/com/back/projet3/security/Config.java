@@ -1,64 +1,83 @@
 package com.back.projet3.security;
 
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.context.annotation.Configuration; 
-
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
 
 @Configuration
 @EnableWebSecurity
 public class Config {
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-	    
-        http.authorizeRequests((authz) -> {
-            try {
-                authz
-                    .antMatchers("/barters*","/Home","/").permitAll()
-                	.antMatchers("/users/{user.id}/profil", "/offer-a-barter*", "/barters/*", "/proposal_deal",
-                    "/notifications", "/notifications/{user.id}").hasRole("USER") /*L'utilisateur pourra accèder à tous les liens répertoriés ici.*/
-                    .antMatchers("/*").hasRole("ADMIN") /*L'adminisatrateur bénéficie de tous les droits d'accès.*/
-                    .anyRequest().authenticated()
-                    .and()
-                    .formLogin()
-                    .and()
-                    .httpBasic();
-            } catch (Exception e) {
+  @Autowired
+  JwtEntryPoint jwtEntryPoint;
+
+  @Autowired
+  JwtFilter jwtFilter;
+
+
+
+  @Bean
+  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    /**
+     * Une Session http sauvegarde des informations à propos d'un utilisateur
+     * (client login state, for example, plus whatever else the Web application
+     * needs to save)
+     * Si on laisse le session management actif alors qu'on a désactivé la
+     * protection CRSF on s'ouvre à des attaques CSRF
+     * d'ou la ligne 60 sessionManagement(session ->
+     * session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+     */
+
+    http.cors().and().csrf().disable()
+        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .exceptionHandling()
+        .authenticationEntryPoint(jwtEntryPoint)
+        .and()
+        .authorizeRequests()
+        .antMatchers("/", "/barters", "/offer-a-barter", "/login", "/signup")
+        .permitAll()
+        .anyRequest().authenticated();
+
+
+        
+
+    http.logout().logoutSuccessUrl("/logoutSuccessfully");  
+    // where to implement the middleware filter
+    http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+    return http.build();
+  }
+
+
     
-                e.printStackTrace();
-            }
-        });
-  
-        return http.build();
-
-	};
-
-    @Bean
-    public InMemoryUserDetailsManager userDetailsService() {
-    PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();   
-
-    UserDetails user = User
-        .withUsername("user")
-        .password(encoder.encode("user"))
-        .roles("USER")
-        .build();
-
-    UserDetails admin = User
-        .withUsername("admin")
-        .password(encoder.encode("admin"))
-        .roles("ADMIN")
-        .build();
-
-	return new InMemoryUserDetailsManager(user, admin);
-
+   /* @Bean
+    public WebMvcConfigurer corsConfigurer() {
+    // https://stackoverflow.com/questions/44697883/can-you-completely-disable-cors-support-in-spring
+    return new WebMvcConfigurer() {
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**").allowedOrigins("http://localhost:4200").allowedMethods("*");
     }
+    };
+}
+    
+} */
+  @Bean
+  PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 
-} 
+}

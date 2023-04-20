@@ -25,5 +25,4 @@ public class Notification {
      @JoinColumn(name="user_id", referencedColumnName = "id")
      private Notification notification;
      // => on joint la colonne user à notification.
-
 }

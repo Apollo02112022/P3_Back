@@ -22,12 +22,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class Config {
 
-
   @Autowired
   JwtEntryPoint jwtEntryPoint;
 
   @Autowired
   JwtFilter jwtFilter;
+
 
 
   @Bean
@@ -42,45 +42,27 @@ public class Config {
      * session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
      */
 
-    //      .authorizeRequests()
-    //      .antMatchers("/admin").hasRole("ADMIN")
-    //      .antMatchers("/user").hasRole("USER")
-    //      .anyRequest().authenticated()
-    //      .and()
-    //      .formLogin();
-
     http.cors().and().csrf().disable()
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .exceptionHandling()
         .authenticationEntryPoint(jwtEntryPoint)
         .and()
         .authorizeRequests()
-        .antMatchers("/test", "/login")
-        .permitAll();
-        // .anyRequest().authenticated();
-        // .and()
-        // .formLogin()
-        // .and()
-        // .oauth2Login();
+        .antMatchers("/", "/barters", "/offer-a-barter", "/login", "/test")
+        .permitAll()
+        .anyRequest().authenticated();
 
-    // http
-    //   .authorizeRequests()
-    //   .antMatchers("/admin").hasRole("ADMIN")
-    //   .antMatchers("/user").hasRole("USER")
-    //   .anyRequest().authenticated()
-    //   .and()
-    //   .formLogin()
-    //   .and()
-    //   .oauth2Login();
 
-    http.logout().logoutSuccessUrl("/logoutSuccessfully");
+        
+
+    http.logout().logoutSuccessUrl("/logoutSuccessfully");  
     // where to implement the middleware filter
     http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     return http.build();
   }
 
 
-    // }
+    
    /* @Bean
     public WebMvcConfigurer corsConfigurer() {
     // https://stackoverflow.com/questions/44697883/can-you-completely-disable-cors-support-in-spring
@@ -99,4 +81,3 @@ public class Config {
   }
 
 }
-

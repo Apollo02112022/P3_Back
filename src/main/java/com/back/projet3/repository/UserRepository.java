@@ -1,7 +1,6 @@
 package com.back.projet3.repository;
 
-
-import java.util.Optional;
+// import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import com.back.projet3.entity.User;
@@ -9,13 +8,12 @@ import com.back.projet3.entity.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-  Boolean existsByUsername(String username);
+  Boolean existsByPseudo(String pseudo);
   boolean existsByMail(String mail);
-  User findUserByUsername(String username);
+  // User findUserByUsername(String username);
   User findUserByPseudo(String pseudo);
   User findUserByPassword(String password);
-  Optional<User> findByMail(String mail);
-  Optional<User> findByUsername(String username);
+  Object findByMail(String mail);
+  Object findByPseudo(String pseudo);
+
 }
-
-

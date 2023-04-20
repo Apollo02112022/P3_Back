@@ -1,5 +1,6 @@
 package com.back.projet3.controller;
 
+import java.io.IOException;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import java.util.Optional;
@@ -18,6 +19,9 @@ import org.springframework.http.HttpStatus;
 import java.util.HashMap;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.http.HttpHeaders;
+import com.back.projet3.dto.UserDto;
+import com.back.projet3.util.ImageUtil;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
 @RestController
@@ -42,10 +46,66 @@ public class UserController {
     }
 
     
-    @PostMapping("/signup") //api/signup POST Permet l’inscription
-    public User createUser(@RequestBody User user){
-        // @RequestBody sert a récuperer les information de user
-        return userRepository.save(user);
+    // Création d'un nouvel utilisateur dans la base de données via le formulaire
+    // d'inscription.
+
+    @PostMapping("/signup")
+    public ResponseEntity<?> createUser(@ModelAttribute UserDto userDto) {
+
+        User user = new User();
+
+        // System.out.println("@@@@@@@@@@" + userDto.getPassword());
+
+        // J'encode le mot de passe de ma classe UserDto et je l'attribue au mot de passe de ma classe User.
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String encodedPassword = encoder.encode(userDto.getPassword());
+        user.setPassword(encodedPassword);
+
+        // J'attribue chacune des propriétés de ma classe UserDto à leur propriétés respectives de ma classe User. 
+
+        String lastname = userDto.getLastname();
+        user.setLastname(lastname);
+        String firstname = userDto.getFirstname();
+        user.setFirstname(firstname);
+        String username = userDto.getUsername();
+        user.setUsername(username);
+        String city = userDto.getCity();
+        user.setCity(city);
+        int county = userDto.getCounty();
+        user.setCounty(county);
+        String mail = userDto.getMail();
+        user.setMail(mail);
+
+        // Je vérifie si un utilisateur se réinscrit avec la même adresse mail et/ou le même pseudo.
+
+        if (userRepository.findByMail(userDto.getMail()) != null) {
+            return new ResponseEntity<>("Un utilisateur avec l'adresse e-mail " + userDto.getMail() + " existe déjà.",
+                    HttpStatus.CONFLICT);
+        }
+
+        if (userRepository.findByUsername(userDto.getUsername()) != null) {
+            return new ResponseEntity<>(
+                    "Un utilisateur avec le nom d'utilisateur " + userDto.getUsername() + " existe déjà.",
+                    HttpStatus.CONFLICT);
+        }
+
+        // Je modifie le format de la photo de l'utilisateur et je la compresse. 
+
+        byte[] pictureInByteForm;
+
+        try {
+            pictureInByteForm = ImageUtil.compressImage(userDto.getPicture().getBytes());
+            user.setPicture(pictureInByteForm);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // J'enregistre le nouvel utilisateur.
+
+        userRepository.save(user);
+        return new ResponseEntity<>(user, HttpStatus.CREATED);
+
     }
 
     //A modifier pour faire une connection sécurisé

@@ -6,8 +6,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 @Data
-@Entity //Table Category
-@Table(name="category")
+@Entity // Table Category
+@Table(name = "category")
 public class Category {
 
     @Id

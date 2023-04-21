@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import com.back.projet3.Dto.PasswordDto;
+import com.back.projet3.Dto.UserPictureDto;
 import com.back.projet3.Dto.MailDto;
 import com.back.projet3.entity.User;
 import com.back.projet3.repository.UserRepository;
@@ -249,6 +250,32 @@ public class UserController {
     public boolean deleteUser(@PathVariable Long userid) {
         userRepository.deleteById(userid);
         return true;
+    }
+
+    @PutMapping("/users/{userid}/profil/update-picture")
+    public ResponseEntity<?> updateUserPicture(@PathVariable Long userid, @RequestBody UserPictureDto userPictureDto){
+       
+        Optional<User> optionalUser = userRepository.findById(userid);
+
+        if(optionalUser.isPresent()){
+
+            User userToUpdate = optionalUser.get();
+
+            byte[] pictureInByte ;
+    
+            try {
+                pictureInByte = ImageUtil.compressImage(userPictureDto.getPicture().getBytes());
+                userToUpdate.setPicture(pictureInByte);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            userRepository.save(userToUpdate);
+
+            return new ResponseEntity<>("Your picture have changed !", HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>("Who are you ?", HttpStatus.NOT_MODIFIED);
     }
 
 }

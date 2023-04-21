@@ -1,9 +1,12 @@
 package com.back.projet3.controller;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -87,10 +90,41 @@ public class AnnouncementController {
     }
 
     // DELETE
-    @DeleteMapping("/barters/{id}") // api/users/:usersId DELETE supprime une annonce
-    public boolean deleteUser(@PathVariable Long id) {
-        announcementRepository.deleteById(id);
-        return true;
+    @DeleteMapping("/users/{userid}/barters/{annoucementid}") // /users/{userid}/barters/{annoucementid} DELETE supprime une annonce 
+    public ResponseEntity<?> deleteUserAnnouncement(@PathVariable Long userid, @PathVariable Long annoucementid) {
+
+        Optional<User> optionalUser = userRepository.findById(userid);
+        Optional<Announcement> optinalAnnouncement = announcementRepository.findById(annoucementid);
+        List<Announcement> optionalUserAnnouncementList = optionalUser.get().getUserAnnouncements();
+        List<Announcement> optionalAnswersList = optionalUser.get().getAnswers();
+        List<Announcement> optionalFavoritesList = optionalUser.get().getFavorites();
+        List<Announcement> optionalNotificationsList = optionalUser.get().getNotifications();
+
+        if(optionalUser.isPresent() && optinalAnnouncement.isPresent()){
+
+            for(Announcement userAnnoncementToDelete : optionalUserAnnouncementList){
+                if(Objects.equals(userAnnoncementToDelete, optinalAnnouncement.get())){
+    
+                    Announcement announcementToDelete = optinalAnnouncement.get();
+
+                    optionalUserAnnouncementList.remove(userAnnoncementToDelete);
+                    optionalAnswersList.remove(userAnnoncementToDelete);
+                    optionalFavoritesList.remove(userAnnoncementToDelete);
+                    optionalNotificationsList.remove(userAnnoncementToDelete);
+
+                    announcementToDelete.setCategory(null);
+                    announcementToDelete.setUser(null);
+
+
+                    announcementRepository.delete(announcementToDelete);
+    
+                    return new ResponseEntity<String>("Your announcement has deleted", HttpStatus.ACCEPTED);
+                }
+            }
+        }
+
+        return new ResponseEntity<String>("Try again", HttpStatus.NOT_ACCEPTABLE);
     }
+    // notifications answers favorites userAnnouncements
 
 }

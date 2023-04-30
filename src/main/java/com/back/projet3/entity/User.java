@@ -1,14 +1,6 @@
 package com.back.projet3.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-
-import com.back.projet3.validator.ValidName;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
@@ -34,19 +26,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    @Size(max=20)
-    @ValidName
     private String lastname;
-
-    @NotBlank
-    @Size(max=20)
-    @ValidName
     private String firstname;
-
-    @NotBlank
-    @Size(max=10)
-    @Pattern(regexp = "\\w+")
     private String pseudo;
     
     // @Lob est une annotation utilisée pour indiquer qu'un champ de l'entité correspondante doit
@@ -62,20 +43,9 @@ public class User {
 
     private byte[] picture;
 
-    @Email
     private String mail;
-
-    @NotBlank
-    @Size(max=20)
-    @ValidName
     private String city;
-    
-    @Min(971)
-    @Max(95999)
     private int county;
-
-    @NotBlank
-    @Size(min=8)
     private String password;
 
     @OneToMany(mappedBy="user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

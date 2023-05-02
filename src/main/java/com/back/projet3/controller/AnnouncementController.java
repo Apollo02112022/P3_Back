@@ -23,9 +23,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.back.projet3.entity.Announcement;
 import com.back.projet3.entity.Category;
+import com.back.projet3.entity.User;
 import com.back.projet3.entity.Announcement;
 import com.back.projet3.repository.AnnouncementRepository;
 import com.back.projet3.repository.CategoryRepository;
+import com.back.projet3.repository.UserRepository;
 import com.back.projet3.repository.AnnouncementRepository;
 import com.back.projet3.util.ImageUtil;
 import com.back.projet3.dto.AnnouncementDto;
@@ -37,7 +39,7 @@ public class AnnouncementController {
     @Autowired
     private AnnouncementRepository announcementRepository;
     @Autowired
-    private CategoryRepository categoryRepository;
+    private UserRepository userRepository;
    
 
     

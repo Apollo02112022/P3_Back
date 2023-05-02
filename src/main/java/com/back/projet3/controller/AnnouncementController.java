@@ -45,11 +45,13 @@ public class AnnouncementController {
     
     // CREATE
     @PostMapping("/offer-a-barter")
-    public ResponseEntity<?> createAnnouncement(@ModelAttribute AnnouncementDto announcementDto) {
+    public ResponseEntity<?> createAnnouncement(@ModelAttribute AnnouncementDto announcementDto, @RequestParam Long userid) {
         Announcement announcement = new Announcement();
         String description = announcementDto.getDescription();
         announcement.setDescription(description);
-        
+        User userAnnouncement = userRepository.findById(userid).get();
+        announcement.setUser(userAnnouncement);
+
         byte[] pictureInByteForm2;
 
         try {
@@ -62,7 +64,7 @@ public class AnnouncementController {
         return new ResponseEntity<>(announcement,HttpStatus.CREATED);
     }
        // Récupération de l'image d'annonce d'un utilisateur.
-       @CrossOrigin(origins = "http://localhost:4200")
+    //    @CrossOrigin(origins = "http://localhost:4200")
        @GetMapping("/offer-a-barter/{id}/image")
        public ResponseEntity<byte[]> getAnnouncementPictureById(@PathVariable Long id) {
            // Recherche de l'annonce correspondant à l'ID fourni dans la base de données.

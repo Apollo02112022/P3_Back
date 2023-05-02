@@ -52,9 +52,6 @@ public class Config {
         .permitAll();
         // .anyRequest().authenticated();
 
-
-        
-
     http.logout().logoutSuccessUrl("/logoutSuccessfully");  
     // where to implement the middleware filter
     http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

@@ -14,4 +14,5 @@ import com.back.projet3.entity.Category;
 public interface AnnouncementRepository extends JpaRepository<Announcement, Long>{
     List<Announcement> findByCategory(Category category);
     Optional<Announcement> findById(Long id);
+
 }

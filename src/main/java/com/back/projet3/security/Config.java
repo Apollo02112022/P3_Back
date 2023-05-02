@@ -28,8 +28,6 @@ public class Config {
   @Autowired
   JwtFilter jwtFilter;
 
-
-
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     /**
@@ -54,27 +52,12 @@ public class Config {
 
 
         
-
-    http.logout().logoutSuccessUrl("/logoutSuccessfully");  
     // where to implement the middleware filter
     http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     return http.build();
   }
 
 
-    
-   /* @Bean
-    public WebMvcConfigurer corsConfigurer() {
-    // https://stackoverflow.com/questions/44697883/can-you-completely-disable-cors-support-in-spring
-    return new WebMvcConfigurer() {
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**").allowedOrigins("http://localhost:4200").allowedMethods("*");
-    }
-    };
-}
-    
-} */
   @Bean
   PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();

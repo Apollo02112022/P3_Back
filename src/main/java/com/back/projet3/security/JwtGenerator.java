@@ -28,28 +28,27 @@ public class JwtGenerator {
   @Autowired
   CustomUserDetails customUserDetails;
 
-  public String generateToken(String username) {
+  public String generateToken(String pseudo) {
 
     // claims.put("role", role); // add role claim
     // Map<String, String> claims = new HashMap<String, String>();
     // claims.put("role", "user");
     // ADD_ROLE_TO_USER_AND_TOKEN
     // UserDetails userDetails = customUserDetails.loadUserByUsername(username);
-    Claims claims = Jwts.claims().setSubject(username);
+    Claims claims = Jwts.claims().setSubject(pseudo);
     // claims.put("role", userDetails.getAuthorities());
     Date currentDate = new Date();
-    // 30000 30 seconds en millliseconds
-    Date expireDate = new Date(currentDate.getTime() + 3000);
+    // 86,400,000 = 24H en millliseconds
+    Date expireDate = new Date(currentDate.getTime() + 86400000);
     
-    System.out.println("@@@@@@@@@@@@@@@@@@@     " + expireDate.toString());
+    System.out.println("@@@@@@@@@@@@@@@@@@@  Date de génération de Token   " + expireDate.toString());
 
     // Implémentation à récupérer d'internet
     String token = Jwts.builder()
         .setClaims(claims)
-        // .setSubject(username)
         .setIssuedAt(new Date())
         .setExpiration(expireDate)
-        .signWith(SignatureAlgorithm.HS512, "secret")
+        .signWith(SignatureAlgorithm.HS512, "secret") 
         .compact();
     return token;
   }
@@ -68,7 +67,7 @@ public class JwtGenerator {
         .setSigningKey("secret")
         .parseClaimsJws(token)
         .getBody();
-        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" + claims.getSubject());
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@" + claims.getSubject());
     return claims.getSubject();
   }
 

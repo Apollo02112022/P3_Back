@@ -2,8 +2,8 @@ package com.back.projet3.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
@@ -23,9 +23,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.back.projet3.entity.Announcement;
 import com.back.projet3.entity.Category;
+import com.back.projet3.entity.User;
 import com.back.projet3.entity.Announcement;
 import com.back.projet3.repository.AnnouncementRepository;
 import com.back.projet3.repository.CategoryRepository;
+import com.back.projet3.repository.UserRepository;
 import com.back.projet3.repository.AnnouncementRepository;
 import com.back.projet3.util.ImageUtil;
 import com.back.projet3.dto.AnnouncementDto;
@@ -37,7 +39,7 @@ public class AnnouncementController {
     @Autowired
     private AnnouncementRepository announcementRepository;
     @Autowired
-    private CategoryRepository categoryRepository;
+    private UserRepository userRepository;
    
 
     
@@ -93,6 +95,13 @@ public class AnnouncementController {
 
         return announcementRepository.findAll();
     }
+
+    @GetMapping("/users/{userid}/barters") // user/:userid/barters GET Liste des annonces
+    public List<Announcement> findAnnouncementByUserId(@PathVariable Long userid) {
+        Optional<User> optionalUser = userRepository.findById(userid);
+         return optionalUser.get().getUserAnnouncements();
+    }
+
     @GetMapping("/barters/category/{categoryId}")
     public List<Announcement> getAnnouncementsByCategory(@PathVariable Long categoryId) {
         Category category = new Category();
@@ -115,10 +124,46 @@ public class AnnouncementController {
     }
 
     // DELETE
+    @DeleteMapping("/users/{userid}/barters/{annoucementid}") // /users/{userid}/barters/{annoucementid} DELETE supprime une annonce 
+    public ResponseEntity<?> deleteUserAnnouncement(@PathVariable Long userid, @PathVariable Long annoucementid) {
+
+        Optional<User> optionalUser = userRepository.findById(userid);
+        Optional<Announcement> optinalAnnouncement = announcementRepository.findById(annoucementid);
+        List<Announcement> optionalUserAnnouncementList = optionalUser.get().getUserAnnouncements();
+        List<Announcement> optionalAnswersList = optionalUser.get().getAnswers();
+        List<Announcement> optionalFavoritesList = optionalUser.get().getFavorites();
+        List<Announcement> optionalNotificationsList = optionalUser.get().getNotifications();
+
+        if(optionalUser.isPresent() && optinalAnnouncement.isPresent()){
+
+            for(Announcement userAnnoncementToDelete : optionalUserAnnouncementList){
+                if(Objects.equals(userAnnoncementToDelete, optinalAnnouncement.get())){
+    
+                    Announcement announcementToDelete = optinalAnnouncement.get();
+
+                    optionalUserAnnouncementList.remove(userAnnoncementToDelete);
+                    optionalAnswersList.remove(userAnnoncementToDelete);
+                    optionalFavoritesList.remove(userAnnoncementToDelete);
+                    optionalNotificationsList.remove(userAnnoncementToDelete);
+
+                    announcementToDelete.setCategory(null);
+                    announcementToDelete.setUser(null);
+
+
+                    announcementRepository.delete(announcementToDelete);
+    
+                    return new ResponseEntity<String>("Your announcement has deleted", HttpStatus.ACCEPTED);
+                }
+            }
+        }
+
+        return new ResponseEntity<String>("Try again", HttpStatus.NOT_ACCEPTABLE);
+}
     @DeleteMapping("/barters/{id}") // api/users/:usersId DELETE supprime une annonce
     public boolean deleteAnnouncement(@PathVariable Long id) {
         announcementRepository.deleteById(id);
         return true;
+
     }
 
 }

@@ -7,14 +7,12 @@ package com.back.projet3.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 // import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-
-import com.back.projet3.entity.Announcement;
 import com.back.projet3.entity.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    boolean existsByMail(String mail);
+    // boolean existsByMail(String mail);
 //     @Query(value = "SELECT * FROM user", nativeQuery = true)
 //     public List<User> findAllUsers();
 // 

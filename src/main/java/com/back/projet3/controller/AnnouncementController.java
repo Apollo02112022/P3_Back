@@ -32,7 +32,6 @@ import com.back.projet3.util.ImageUtil;
 import com.back.projet3.dto.AnnouncementDto;
 
 //annotation crossorigin pour l'activation de CORS  Cross-origin resource sharing = partage des ressources entre origines multiples »
-@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 public class AnnouncementController {

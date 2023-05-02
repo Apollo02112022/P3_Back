@@ -105,7 +105,7 @@
   				<artifactId>reactor-core</artifactId>
   		<version>3.4.6</version>
 </dependency>
-
+<dependency>
 		<!-- ajout dependence httpClient -->
   <groupId>org.apache.httpcomponents</groupId>
   <artifactId>httpclient</artifactId>

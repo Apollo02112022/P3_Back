@@ -1,7 +1,6 @@
 package com.back.projet3.entity;
 
 import javax.persistence.*;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;

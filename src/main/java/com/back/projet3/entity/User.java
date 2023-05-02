@@ -61,7 +61,7 @@ public class User {
 
 // <---------->
 
-    @OneToMany(mappedBy="notification")
+    @OneToMany(mappedBy="userNotification")
     private List<Notification>user_notification;
     // => On liste les notifications reçu par les utilisateurs qui ont créer l'annonce.
 

@@ -1,17 +1,24 @@
 package com.back.projet3.controller;
-
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-
 import com.back.projet3.entity.Notification;
 import com.back.projet3.repository.NotificationRepository;
+import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
+
+import org.springframework.http.MediaType;
+import java.io.IOException;
 
 
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
     public class NotificationController {
     @Autowired
     private NotificationRepository notificationRepository;
@@ -25,8 +32,7 @@ import com.back.projet3.repository.NotificationRepository;
 //READ
     @GetMapping("/notifications") // api/Notification GET Liste des notifications
     public List<Notification> findAllNotification(){
-
-    return notificationRepository.findAll();
+    return notificationRepository.findAllNotification();
 }
     @GetMapping("/notifications/{id}")
     public Notification findNotification(@PathVariable Long id){
@@ -38,4 +44,64 @@ import com.back.projet3.repository.NotificationRepository;
     notificationRepository.deleteById(id);
     return true;
 }
+// quelques exemples :
+// private List<String> array = new ArrayList();
+
+// obj: { name: string, age: number} = {
+//     name : "Laurie",
+//     age : 23,
+//   }
+//   arr: string[]= [ "Laurie", "Yvens" ]
+// string => clé
+// name => clé
+
+
+private final Map<String, SseEmitter> userEmitters = new ConcurrentHashMap<>();
+// variable privée accessible que dans cette classe, final car ne pas être modifié une fois qu'elle a été initialisée.
+// objet Map, clé String, SseEmitter, variable userEmitters.
+// ConcurrentHashMap est une impléméntation de Map.
+
+@PostMapping("/postMessage")
+// Méthode @postMapping qui sera appelé lors d'une requête http post avec url
+    public void postMessage(@RequestParam("message") String message, @RequestParam("userId") String userId) {
+    // @requestParam récupère le message à envoyer et l'id qu'il doit recevoir
+        SseEmitter emitter = userEmitters.get(userId);
+        // emitter récupère l'id de l'utilisateur (userEmitters)
+        if (emitter != null) {
+        // si l'emitter n'est pas null
+            try {
+                emitter.send(message, MediaType.APPLICATION_JSON);
+                // signifie que l'utilisateur est connecté et qu'un émetteur à été créé pour lui => méthode emitter.send
+            } catch (IOException error) {
+                // gère les exceptions (erreur)
+                userEmitters.remove(userId);
+                // l'id de l'émetteur retiré de la variable userEmitters
+            }
+        }
+    }
+
+ @GetMapping("/streamMessages")
+// requête http get sur l'url
+//  @getMapping permet de créer un nouvel émetteur (SseEmitter) et de le stocker dans la variable userEmitters
+    public SseEmitter streamMessages(@RequestParam("userId") String userId) {
+        // @requestParam récupère l'id de l'utilisateur pour lequel l'émetteur doit être créé
+        SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);
+        // Long.MAX.VALUE signifie que la connexion restera ouverte aussi longtemps que possible pour permettre la 
+        // diffusion en continue de données en temps réel. 
+        userEmitters.put(userId, emitter);
+        // userId est la clé de la paire clé-valeur et emitter la valeur associé à cette clé.
+        // Ajoute à Map un objet SseEmitters(emitter) associé à userId
+
+        emitter.onTimeout(() -> userEmitters.remove(userId));
+        // Méthode qui permet de définir l'action à effectuer lorsque la connexion avec l'objet SseEmitters expire
+        // Dans ce cas, on supprime l'id 
+        emitter.onCompletion(() -> userEmitters.remove(userId));
+        // Méthode qui permet de définir l'action à effectuer lorsque la connexion avec l'objet SseEmitters est fermée
+        // Dans ce cas, on supprime l'id 
+  
+        return emitter;
+    }
+ 
+
 }
+

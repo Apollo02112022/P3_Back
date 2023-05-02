@@ -36,11 +36,11 @@
 			<optional>true</optional>
 		</dependency>
 
-		<dependency>
+		<!-- <dependency>
 			<groupId>com.microsoft.sqlserver</groupId>
 			<artifactId>mssql-jdbc</artifactId>
 			<scope>runtime</scope>
-		</dependency>
+		</dependency> -->
 
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -60,10 +60,10 @@
 			<version>8.0.30</version>
 		</dependency>
 
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jdbc</artifactId>
-		</dependency>
+		</dependency> -->
 
 		<!-- Ajout de nouvelles dépendances (ci-dessous) -->
 
@@ -76,7 +76,13 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
+		  </dependency>
+
+		  
+		  <!-- <dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-oauth2-client</artifactId>
+		  </dependency> -->
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -94,10 +100,25 @@
 			<version>0.9.1</version>
 		</dependency>
 		<dependency>
+
   			<groupId>io.projectreactor</groupId>
   				<artifactId>reactor-core</artifactId>
   		<version>3.4.6</version>
 </dependency>
+
+		<!-- ajout dependence httpClient -->
+  <groupId>org.apache.httpcomponents</groupId>
+  <artifactId>httpclient</artifactId>
+  <scope>test</scope>
+</dependency>
+<!-- dependance spring security -->
+<dependency>
+    <groupId>org.springframework.security</groupId>
+    <artifactId>spring-security-config</artifactId>
+    <version>${spring-security.version}</version>
+</dependency>
+
+
 
 		<dependency>
 			<groupId>org.springframework</groupId>

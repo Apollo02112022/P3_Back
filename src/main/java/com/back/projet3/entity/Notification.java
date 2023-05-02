@@ -32,4 +32,8 @@ public class Notification {
      private Notification userNotification;
      // => on joint la colonne user à notification.
 
+
 }
+
+
+

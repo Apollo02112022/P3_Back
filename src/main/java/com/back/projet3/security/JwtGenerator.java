@@ -5,14 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.stereotype.Component;
 import io.jsonwebtoken.Claims;
-/* 
-Voir pom.xml au niveau de 
-		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt</artifactId>
-			<version>0.9.1</version>
-		</dependency>
-*/
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -28,7 +20,7 @@ public class JwtGenerator {
   @Autowired
   CustomUserDetails customUserDetails;
 
-  public String generateToken(String pseudo) {
+  public String generateToken(String pseudo, Number id) {
 
     // claims.put("role", role); // add role claim
     // Map<String, String> claims = new HashMap<String, String>();
@@ -36,7 +28,7 @@ public class JwtGenerator {
     // ADD_ROLE_TO_USER_AND_TOKEN
     // UserDetails userDetails = customUserDetails.loadUserByUsername(username);
     Claims claims = Jwts.claims().setSubject(pseudo);
-    // claims.put("role", userDetails.getAuthorities());
+    claims.put("userId", id);
     Date currentDate = new Date();
     // 86,400,000 = 24H en millliseconds
     Date expireDate = new Date(currentDate.getTime() + 86400000);

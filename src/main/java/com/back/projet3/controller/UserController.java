@@ -172,8 +172,8 @@ public class UserController {
         String passwordFromFront = userDataFromFront.getPassword();
         System.out.println(passwordFromFront + userDataFromFront.getPassword());
         // S'ils correspondent, générer un token pour cet utilisateur
-        if (passwordFromFront.equals(userInDb.getPassword())) {
-            String token = tokenGenerator.generateToken(userDataFromFront.getPseudo());
+        if (passwordFromFront.equals(userInDb.getPassword())) { 
+            String token = tokenGenerator.generateToken(userDataFromFront.getPseudo(), userInDb.getId());
             map.put("token", token);
             map.put("message", "Connexion réussie");
             return new ResponseEntity<>(map, HttpStatus.OK);

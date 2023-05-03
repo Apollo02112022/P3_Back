@@ -44,13 +44,6 @@ public class UserController {
     @Autowired
     private BlackListTokenRepository blackListTokenRepository;
 
-    @GetMapping("/test")
-    public ResponseEntity<?> getTest() {
-        HashMap<String, String> map = new HashMap<String, String>();
-        map.put("message", "test test test");
-        return new ResponseEntity<>(map, HttpStatus.OK);
-    }
-
     // Création d'un nouvel utilisateur dans BDD via le formulaire d'inscription.
 
     @PostMapping("/signup")

@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.back.projet3.entity.Announcement;
 import com.back.projet3.entity.Category;
 import com.back.projet3.entity.User;
@@ -33,8 +32,8 @@ import com.back.projet3.util.ImageUtil;
 import com.back.projet3.dto.AnnouncementDto;
 
 //annotation crossorigin pour l'activation de CORS  Cross-origin resource sharing = partage des ressources entre origines multiples »
-@CrossOrigin(origins = "http://localhost:4200")
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 public class AnnouncementController {
     @Autowired
     private AnnouncementRepository announcementRepository;

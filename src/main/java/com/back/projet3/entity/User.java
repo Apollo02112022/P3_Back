@@ -25,7 +25,6 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String lastname;
     private String firstname;
     private String pseudo;
@@ -78,7 +77,7 @@ public class User {
 
 // <---------->
 
-    @OneToMany(mappedBy="notification")
+    @OneToMany(mappedBy="userNotification")
     private List<Notification>user_notification;
     // => On liste les notifications reçues par les utilisateurs qui ont créé l'annonce.
 

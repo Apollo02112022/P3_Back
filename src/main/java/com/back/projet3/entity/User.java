@@ -1,7 +1,6 @@
 package com.back.projet3.entity;
 
 import javax.persistence.*;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
@@ -78,7 +77,7 @@ public class User {
 
 // <---------->
 
-    @OneToMany(mappedBy="notification")
+    @OneToMany(mappedBy="userNotification")
     private List<Notification>user_notification;
     // => On liste les notifications reçues par les utilisateurs qui ont créé l'annonce.
 

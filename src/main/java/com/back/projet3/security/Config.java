@@ -51,7 +51,6 @@ public class Config {
         .anyRequest().authenticated();
 
 
-        
     // where to implement the middleware filter
     http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     return http.build();

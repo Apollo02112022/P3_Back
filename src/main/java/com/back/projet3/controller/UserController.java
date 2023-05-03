@@ -4,9 +4,13 @@ import java.io.IOException;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import java.util.Optional;
-import javax.annotation.security.RolesAllowed;
+
+import javax.validation.Valid;
+
+// import javax.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.back.projet3.Dto.PasswordDto;
 import com.back.projet3.Dto.MailDto;
@@ -26,6 +30,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
+@Validated
 
 public class UserController {
 
@@ -47,7 +52,7 @@ public class UserController {
     // Création d'un nouvel utilisateur dans BDD via le formulaire d'inscription.
 
     @PostMapping("/signup")
-    public ResponseEntity<?> createUser(@ModelAttribute UserDto userDto) {
+    public ResponseEntity<?> createUser(@Valid @ModelAttribute UserDto userDto) {
 
         User user = new User();
 
@@ -111,7 +116,7 @@ public class UserController {
     // Récupération de l'image d'un utilisateur.
 
     @GetMapping("/users/{id}/picture")
-    public ResponseEntity<?> getUserPictureById(@PathVariable Long id) {
+    public ResponseEntity<byte[]> getUserPictureById(@PathVariable Long id) {
 
         // Utilisation du Repository de l'utilisateur pour rechercher l'utilisateur 
         // correspondant à l'ID fourni dans la base de données. Le résultat est 
@@ -143,8 +148,7 @@ public class UserController {
 
         // Création d'un objet ResponseEntity contenant l'image décompressée.
 
-        return ResponseEntity.ok().headers(headers).body(decompressedPicture);
-
+        return new ResponseEntity<>(decompressedPicture, headers, HttpStatus.OK);
     }
 
   

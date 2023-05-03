@@ -4,12 +4,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import com.back.projet3.dto.NotificationDto;
 import com.back.projet3.entity.Notification;
+import com.back.projet3.entity.User;
 import com.back.projet3.repository.NotificationRepository;
+import com.back.projet3.repository.UserRepository;
 import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
 
 import org.springframework.http.MediaType;
@@ -22,6 +27,8 @@ import java.io.IOException;
     public class NotificationController {
     @Autowired
     private NotificationRepository notificationRepository;
+    @Autowired
+    private UserRepository userRepository;
 
 //CREATE
     @PostMapping("/proposal_deal") 
@@ -63,21 +70,34 @@ private final Map<String, SseEmitter> userEmitters = new ConcurrentHashMap<>();
 
 @PostMapping("/postMessage")
 // Méthode @postMapping qui sera appelé lors d'une requête http post avec url
-    public void postMessage(@RequestParam("message") String message, @RequestParam("userId") String userId) {
+    public boolean postMessage(@RequestBody NotificationDto message, @RequestParam("userAnnounceId") Long userAnnounceId) {
     // @requestParam récupère le message à envoyer et l'id qu'il doit recevoir
-        SseEmitter emitter = userEmitters.get(userId);
-        // emitter récupère l'id de l'utilisateur (userEmitters)
-        if (emitter != null) {
-        // si l'emitter n'est pas null
-            try {
-                emitter.send(message, MediaType.APPLICATION_JSON);
-                // signifie que l'utilisateur est connecté et qu'un émetteur à été créé pour lui => méthode emitter.send
-            } catch (IOException error) {
-                // gère les exceptions (erreur)
-                userEmitters.remove(userId);
-                // l'id de l'émetteur retiré de la variable userEmitters
-            }
-        }
+        // SseEmitter emitter = userEmitters.get(userAnnounceId);
+        // // emitter récupère l'id de l'utilisateur (userEmitters)
+        // if (emitter != null) {
+        // // si l'emitter n'est pas null
+        //     try {
+        //         emitter.send(message, MediaType.APPLICATION_JSON);
+        //         // signifie que l'utilisateur est connecté et qu'un émetteur à été créé pour lui => méthode emitter.send
+        //     } catch (IOException error) {
+        //         // gère les exceptions (erreur)
+        //         userEmitters.remove(userAnnounceId);
+        //         // l'id de l'émetteur retiré de la variable userEmitters
+        //     }
+        // }
+
+       User userSender = userRepository.findById(userAnnounceId).get();
+
+       Notification userNotification = new Notification();
+
+       userNotification.setMail(message.getMail());
+       userNotification.setTel(message.getTel());
+       userNotification.setMessage(message.getMessage());
+       userNotification.setUser(userSender);
+        
+       notificationRepository.save(userNotification);
+
+       return true;
     }
 
  @GetMapping("/streamMessages")
@@ -103,5 +123,6 @@ private final Map<String, SseEmitter> userEmitters = new ConcurrentHashMap<>();
     }
  
 
+    // @GetMapping("/")
 }
 

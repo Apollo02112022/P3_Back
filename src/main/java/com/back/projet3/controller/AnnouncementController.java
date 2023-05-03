@@ -62,6 +62,9 @@ public class AnnouncementController {
         announcementRepository.save(announcement);
         return new ResponseEntity<>(announcement,HttpStatus.CREATED);
     }
+
+
+    
        // Récupération de l'image d'annonce d'un utilisateur.
     //    @CrossOrigin(origins = "http://localhost:4200")
        @GetMapping("/offer-a-barter/{id}/image")

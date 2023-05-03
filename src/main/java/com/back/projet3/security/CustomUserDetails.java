@@ -23,12 +23,12 @@ public class CustomUserDetails implements UserDetailsService {
   private UserRepository userRepository;
 
   @Override
-  public User loadUserByUsername(String username) throws UsernameNotFoundException {
-    // T-753 Auto-generated method stub
+  public User loadUserByUsername(String pseudo) throws UsernameNotFoundException {
 
-    com.back.projet3.entity.User user = userRepository.findUserByPseudo(username);
+    com.back.projet3.entity.User user = userRepository.findUserByPseudo(pseudo);
+    // com.back.projet3.entity.User userId = userRepository.findUserById(id);
     if (user == null) {
-      throw new UsernameNotFoundException("J'ai pas trouvé le username pourtant j'ai essayé hein 🥵");
+      throw new UsernameNotFoundException("J'ai pas trouvé le pseudo pourtant j'ai essayé hein 🥵");
     }
 
     Collection<SimpleGrantedAuthority> roles = new ArrayList<SimpleGrantedAuthority>();

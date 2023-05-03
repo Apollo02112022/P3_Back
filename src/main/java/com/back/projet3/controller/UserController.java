@@ -15,12 +15,14 @@ import org.springframework.web.bind.annotation.*;
 import com.back.projet3.Dto.PasswordDto;
 import com.back.projet3.Dto.MailDto;
 import com.back.projet3.entity.User;
+import com.back.projet3.entity.BlackListTokenEntity;
+import com.back.projet3.repository.BlackListTokenRepository;
 import com.back.projet3.repository.UserRepository;
 import com.back.projet3.security.JwtGenerator;
+import com.back.projet3.security.JwtFilter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import java.util.HashMap;
-// import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.http.HttpHeaders;
 import com.back.projet3.dto.UserDto;
 import com.back.projet3.util.ImageUtil;
@@ -39,14 +41,13 @@ public class UserController {
     private JwtGenerator tokenGenerator;
 
     @Autowired
+    private JwtFilter tokenFilter;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @GetMapping("/test")
-    public ResponseEntity<?> getTest() {
-        HashMap<String, String> map = new HashMap<String, String>();
-        map.put("message", "test test test");
-        return new ResponseEntity<>(map, HttpStatus.OK);
-    }
+    @Autowired
+    private BlackListTokenRepository blackListTokenRepository;
 
     // Création d'un nouvel utilisateur dans BDD via le formulaire d'inscription.
 
@@ -150,7 +151,7 @@ public class UserController {
         return new ResponseEntity<>(decompressedPicture, headers, HttpStatus.OK);
     }
 
-    // A modifier pour faire une connection sécurisé
+  
     @PostMapping("/login") // api/login POST Permet la connexion
     public ResponseEntity<?> loginUser(@RequestBody User userDataFromFront) {
         // Création d'un map
@@ -163,20 +164,34 @@ public class UserController {
             map.put("message", "L'utilisateur ne correspondent pas");
             return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
         }
-        // Etape 2 Rechercher dans la base de données la correspondance du mot de de
+        // Etape 2 Rechercher dans la base de données la correspondance du mot de
         // passe de l'utilisateur
         String passwordFromFront = userDataFromFront.getPassword();
         System.out.println(passwordFromFront + userDataFromFront.getPassword());
         // S'ils correspondent, générer un token pour cet utilisateur
-        if (passwordFromFront.equals(userInDb.getPassword())) {
-            String token = tokenGenerator.generateToken(userDataFromFront.getPseudo());
+        if (passwordFromFront.equals(userInDb.getPassword())) { 
+            String token = tokenGenerator.generateToken(userDataFromFront.getPseudo(), userInDb.getId());
             map.put("token", token);
             map.put("message", "Connexion réussie");
             return new ResponseEntity<>(map, HttpStatus.OK);
         } else {
-            map.put("message", "le mot de passe ne correspondent pas");
+            map.put("message", "le mot de passe ne correspond pas");
             return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
         }
+    }
+
+
+    @PostMapping("custumLogout")
+    public ResponseEntity<?> logout(@RequestHeader("Authorization") String bearerToken) {
+        // Obtenir le token depuis la requête http
+        System.out.println("@@@@@@@@ LOGOUT !!!!!    " + bearerToken);
+        String token = tokenFilter.getTokenString(bearerToken);
+        BlackListTokenEntity tokenToBlackList = new BlackListTokenEntity();
+        tokenToBlackList.setToken(token);
+        blackListTokenRepository.save(tokenToBlackList);
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("message", "logout réussie");
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
     @GetMapping("/users") // api/users GET Liste des utilisateurs
@@ -185,12 +200,6 @@ public class UserController {
         return userRepository.findAll();
     }
 
-    // A modifier pour faire une connection sécurisé
-    @PostMapping("/logout") // api/logout POST Permet la déconnexion
-    public User logoutUser(User user) {
-
-        return user;
-    }
 
     @GetMapping("/users/{id}/profil") // api/users/{id}/profil GET Détails d’un utilisateur
     public User findUser(@PathVariable Long id) {

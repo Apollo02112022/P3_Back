@@ -44,23 +44,37 @@ public class AnnouncementController {
     
     // CREATE
     @PostMapping("/offer-a-barter")
-    public ResponseEntity<?> createAnnouncement(@ModelAttribute AnnouncementDto announcementDto, @RequestParam Long userid) {
+    public ResponseEntity<?> createAnnouncement(@ModelAttribute AnnouncementDto announcementDto,
+            @RequestParam Long userid) {
+        // creation d'un nouvel objet announcement()
         Announcement announcement = new Announcement();
+        // récupère la description de l'annonce depuis l'objet "AnnouncementDto"
+        // et on la définit comme description de l'annonce
         String description = announcementDto.getDescription();
         announcement.setDescription(description);
+        // récupère l'objet "User" associé à l'identifiant d'utilisateur fourni
+        // et on le définit comme propriétaire de l'annonce
         User userAnnouncement = userRepository.findById(userid).get();
         announcement.setUser(userAnnouncement);
-
+        // initialise une variable pour stocker l'image compressée de l'annonce
         byte[] pictureInByteForm2;
-
+        System.out.println("&&&&&&&&&&&&&&&&&&&&&&&" + announcementDto.getDescription());
         try {
+            // compresse l'image fournie dans l'objet "announcementDto"
+            // en utilisant une méthode utilitaire appelée "ImageUtil.compressImage()"
             pictureInByteForm2 = ImageUtil.compressImage(announcementDto.getAnnouncement_picture().getBytes());
+            // On définit le tableau d'octets résultant comme valeur du champ
+            // "announcement_picture"
             announcement.setAnnouncement_picture(pictureInByteForm2);
         } catch (IOException e) {
+            // Si la compression échoue,affichage des erreurs
             e.printStackTrace();
         }
+        // enregistre l'objet "Announcement"
         announcementRepository.save(announcement);
-        return new ResponseEntity<>(announcement,HttpStatus.CREATED);
+        // retourne un objet ResponseEntity avec la nouvelle annonce créée et un code de
+        // statut HTTP de CREATED (201)
+        return new ResponseEntity<>(announcement, HttpStatus.CREATED);
     }
 
 
@@ -96,7 +110,6 @@ public class AnnouncementController {
     // READ
     @GetMapping("/barters") // api/Announcements GET Liste des annonces
     public List<Announcement> findAllAnnouncement() {
-
         return announcementRepository.findAll();
     }
 

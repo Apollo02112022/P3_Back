@@ -18,6 +18,10 @@ import com.back.projet3.repository.UserRepository;
 import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
 
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
+
+
 import java.io.IOException;
 
 
@@ -70,34 +74,44 @@ private final Map<String, SseEmitter> userEmitters = new ConcurrentHashMap<>();
 
 @PostMapping("/postMessage")
 // Méthode @postMapping qui sera appelé lors d'une requête http post avec url
-    public boolean postMessage(@RequestBody NotificationDto message, @RequestParam("userAnnounceId") Long userAnnounceId) {
+    public ResponseEntity<?> postMessage(@RequestBody NotificationDto message, @RequestParam("userAnnounceId") Long userAnnounceId) {
     // @requestParam récupère le message à envoyer et l'id qu'il doit recevoir
-        // SseEmitter emitter = userEmitters.get(userAnnounceId);
-        // // emitter récupère l'id de l'utilisateur (userEmitters)
-        // if (emitter != null) {
-        // // si l'emitter n'est pas null
-        //     try {
-        //         emitter.send(message, MediaType.APPLICATION_JSON);
-        //         // signifie que l'utilisateur est connecté et qu'un émetteur à été créé pour lui => méthode emitter.send
-        //     } catch (IOException error) {
-        //         // gère les exceptions (erreur)
-        //         userEmitters.remove(userAnnounceId);
-        //         // l'id de l'émetteur retiré de la variable userEmitters
-        //     }
-        // }
+        SseEmitter emitter = userEmitters.get((userAnnounceId).toString());
+        System.out.println("Notif gg");
 
-       User userSender = userRepository.findById(userAnnounceId).get();
+        // emitter récupère l'id de l'utilisateur (userEmitters)
+        if (emitter != null) {
+        System.out.println("Notif OK");
+
+        // si l'emitter n'est pas null
+            try {
+                emitter.send(message, MediaType.APPLICATION_JSON);
+                // signifie que l'utilisateur est connecté et qu'un émetteur à été créé pour lui => méthode emitter.send
+            } catch (IOException error) {
+        System.out.println("Notif not");
+
+                // gère les exceptions (erreur)
+                userEmitters.remove((userAnnounceId).toString());
+                // l'id de l'émetteur retiré de la variable userEmitters
+            }
+        }
+
+       User userReceiver = userRepository.findById(userAnnounceId).get();
 
        Notification userNotification = new Notification();
 
        userNotification.setMail(message.getMail());
        userNotification.setTel(message.getTel());
        userNotification.setMessage(message.getMessage());
-       userNotification.setUser(userSender);
-        
+       userNotification.setUser(userReceiver);
+       Notification notif =  notificationRepository.save(userNotification);
+       NotificationDto newNotif = new NotificationDto();
+       newNotif.setMessage(notif.getMessage()); 
        notificationRepository.save(userNotification);
-
-       return true;
+        // return newNotif;
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("message", "notification created");
+        return new ResponseEntity<>(map, HttpStatus.CREATED);
     }
 
  @GetMapping("/streamMessages")
@@ -123,6 +137,16 @@ private final Map<String, SseEmitter> userEmitters = new ConcurrentHashMap<>();
     }
  
 
-    // @GetMapping("/")
-}
+    // @GetMapping("/users/{userid}/notifications")
+    // private List<Notification> notificationOfUserNotification (@PathVariable Long userId) {
+    //     userRepository.findById(userId);
+    //     Optional<User> userNotif = userRepository.findById(userId);
+    //     if (userNotif.isPresent()) {
+    //         return userNotif.get().getUserNotification();
+    //     } else {
+    //         return null;
+    //     }         
+    // }
+    }
+
 

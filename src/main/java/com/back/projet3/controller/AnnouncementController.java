@@ -57,7 +57,7 @@ public class AnnouncementController {
 
         byte[] pictureInByteForm2;
 
-        System.out.println("&&&&&&&&&&&&&&&&&&&&&&&" + announcementDto.getDescription());
+        System.out.println("&&&&&&&&&&&&&&&&&&&&&" + announcementDto.getDescription());
         try {
             System.out.println("Herreeeeeeeedc" + announcementDto.getAnnouncement_picture());
             // Pas de picture ici, il faut savoir pourquoi, il n'y en a pas 
@@ -112,7 +112,11 @@ public class AnnouncementController {
     
     @GetMapping("/barters/{id}")
     public Announcement getAnnouncementById(@PathVariable Long id) {
-        return announcementRepository.findById(id).orElse(null);
+        if (announcementRepository.findById(id) != null) {
+            return announcementRepository.findById(id).orElse(null);
+        } else {
+            return null;
+        }
     }
     // UPDATE
     @PutMapping("/barters/{id}") // api/Announcements/:AnnouncementsId PUT Mettre à jours une annonce

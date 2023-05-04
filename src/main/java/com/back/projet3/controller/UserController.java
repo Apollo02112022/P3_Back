@@ -16,12 +16,16 @@ import com.back.projet3.Dto.PasswordDto;
 import com.back.projet3.Dto.MailDto;
 import com.back.projet3.entity.User;
 import com.back.projet3.entity.BlackListTokenEntity;
+import com.back.projet3.entity.Notification;
 import com.back.projet3.repository.BlackListTokenRepository;
+import com.back.projet3.repository.NotificationRepository;
 import com.back.projet3.repository.UserRepository;
 import com.back.projet3.security.JwtGenerator;
 import com.back.projet3.security.JwtFilter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+
+import java.util.Collection;
 import java.util.HashMap;
 import org.springframework.http.HttpHeaders;
 import com.back.projet3.dto.UserDto;
@@ -48,6 +52,9 @@ public class UserController {
 
     @Autowired
     private BlackListTokenRepository blackListTokenRepository;
+
+    @Autowired
+    private NotificationRepository notificationRepository;
 
     // Création d'un nouvel utilisateur dans BDD via le formulaire d'inscription.
 
@@ -260,8 +267,35 @@ public class UserController {
     // api/users/{userid}/profil DELETE supprime un utilisateur
     @DeleteMapping("/users/{userid}/profil")
     public boolean deleteUser(@PathVariable Long userid) {
-        userRepository.deleteById(userid);
-        return true;
+
+        Optional<User> optionalUser = userRepository.findById(userid);
+        User userToDelete=optionalUser.get();
+
+        // L'user est present dans la bdd ?
+        if(optionalUser.isPresent()){
+            // récupération de la liste des notif
+           List<Notification> listNotification = notificationRepository.findAll();
+           
+            // pour chaque notif on verifie le user associer 
+           for(Notification notification : listNotification){
+            // on verifie que l'user est bien le même que celui de la notif
+            if(notification.getUser().equals(userToDelete)){
+                // on set l'id user à null pour pouvoir supprimer 
+                notification.setUser(null);
+                notificationRepository.delete(notification);
+            }
+            
+        }
+        // on supprime les notifs dans la variable
+        userToDelete.getUserNotification().removeAll(listNotification);
+        //  et enfin on supprime l'utilisateur
+           userRepository.deleteById(userid);
+           
+           return true;
+        }else{
+            return false;
+        }
+
     }
 
 }

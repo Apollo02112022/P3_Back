@@ -47,8 +47,8 @@ public class Config {
         .and()
         .authorizeRequests()
         .antMatchers("/", "/barters", "/offer-a-barter", "/login", "/signup")
-        .permitAll()
-        .anyRequest().authenticated();
+        .permitAll();
+        // .anyRequest().authenticated();
 
 
     // where to implement the middleware filter

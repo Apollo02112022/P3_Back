@@ -39,7 +39,13 @@ public class AnnouncementController {
     private AnnouncementRepository announcementRepository;
     @Autowired
     private UserRepository userRepository;
-
+   
+    // // READ
+    // @GetMapping("/offer-a-barter") // api/Announcements GET Liste des annonces
+    // public ResponseEntity<?> getAnnouncements() {
+    //     return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    // }
+    
     // CREATE
     @PostMapping("/offer-a-barter")
     public ResponseEntity<?> createAnnouncement(@ModelAttribute AnnouncementDto announcementDto,
@@ -59,6 +65,7 @@ public class AnnouncementController {
         // initialise une variable pour stocker l'image compressée de l'annonce
         byte[] pictureInByteForm2;
 
+        System.out.println("&&&&&&&&&&&&&&&&&&&&&&&" + announcementDto.getDescription());
         try {
             // compresse l'image fournie dans l'objet "announcementDto"
             // en utilisant une méthode utilitaire appelée "ImageUtil.compressImage()"
@@ -79,34 +86,33 @@ public class AnnouncementController {
         return new ResponseEntity<>(announcement, HttpStatus.CREATED);
     }
 
-    // Récupération de l'image d'annonce d'un utilisateur.
-    @GetMapping("/offer-a-barter/{id}/image")
-    public ResponseEntity<byte[]> getAnnouncementPictureById(@PathVariable Long id) {
-        // Recherche de l'annonce correspondant à l'ID fourni dans la base de données.
-        Optional<Announcement> annonce = announcementRepository.findById(id);
-
-        // Vérification si l'annonce existe.
-        if (!annonce.isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        // Extraction de l'image de l'annonce stockée dans la base de données sous forme
-        // compressée.
-        byte[] compressedPicture2 = annonce.get().getAnnouncement_picture();
-        byte[] decompressedPicture2;
-
-        // La méthode decompressPicture2 de la classe ImageUtil est utilisée pour
-        // décompresser l'image.
-        decompressedPicture2 = ImageUtil.decompressImage(compressedPicture2);
-
-        // Création d'un objet HttpHeaders utilisé pour spécifier le type de contenu de
-        // la réponse (ici PNG).
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.IMAGE_PNG);
-
-        // Création d'un objet ResponseEntity contenant l'image décompressée.
-        return new ResponseEntity<>(decompressedPicture2, headers, HttpStatus.OK);
-    }
+       // Récupération de l'image d'annonce d'un utilisateur.
+    //    @CrossOrigin(origins = "http://localhost:4200")
+       @GetMapping("/barters/{id}/image")
+       public ResponseEntity<byte[]> getAnnouncementPictureById(@PathVariable Long id) {
+           // Recherche de l'annonce correspondant à l'ID fourni dans la base de données.
+           Optional<Announcement> annonce = announcementRepository.findById(id);
+       
+           // Vérification si l'annonce existe.
+           if (!annonce.isPresent()) {
+               return ResponseEntity.notFound().build();
+           }
+       
+           // Extraction de l'image de l'annonce stockée dans la base de données sous forme compressée.
+           byte[] compressedPicture2 = annonce.get().getAnnouncement_picture();
+           byte[] decompressedPicture2;
+       
+           // La méthode decompressImage de la classe ImageUtil est utilisée pour décompresser l'image.
+           decompressedPicture2 = ImageUtil.decompressImage(compressedPicture2);
+       
+           // Création d'un objet HttpHeaders utilisé pour spécifier le type de contenu de la réponse (ici PNG).
+           HttpHeaders headers = new HttpHeaders();
+           headers.setContentType(MediaType.IMAGE_PNG);
+       
+           // Création d'un objet ResponseEntity contenant l'image décompressée.
+           return new ResponseEntity<>(decompressedPicture2, headers, HttpStatus.OK);
+       }
+ 
 
     // READ
     @GetMapping("/barters") // api/Announcements GET Liste des annonces
@@ -120,14 +126,7 @@ public class AnnouncementController {
         Optional<User> optionalUser = userRepository.findById(userid);
         return optionalUser.get().getUserAnnouncements();
     }
-
-    @GetMapping("/barters/category/{categoryId}")
-    public List<Announcement> getAnnouncementsByCategory(@PathVariable Long categoryId) {
-        Category category = new Category();
-        category.setId(categoryId);
-        return announcementRepository.findByCategory(category);
-    }
-
+    
     @GetMapping("/barters/{id}")
     public Announcement getAnnouncementById(@PathVariable Long id) {
         return announcementRepository.findById(id).orElse(null);

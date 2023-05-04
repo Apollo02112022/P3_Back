@@ -1,12 +1,15 @@
 package com.back.projet3.entity;
 
-import javax.persistence.*;
+import com.back.projet3.validator.ValidName;
+import com.back.projet3.validator.ValidPassword;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import lombok.Data;
-
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import lombok.Data;
 
 // import com.back.projet3.entity.Announcement;
 
@@ -27,7 +30,17 @@ public class User {
     private Long id;
     private String lastname;
     private String firstname;
+
+    @NotBlank
+    @Size(max=10)
+    @Pattern(regexp = "\\w+")
     private String pseudo;
+
+    @NotBlank
+    @Size(min=8)
+    @ValidPassword
+    private String password;
+
     
     // @Lob est une annotation utilisée pour indiquer qu'un champ de l'entité correspondante doit
     //  être stocké sous forme de grand objet binaire (BLOB). Le mot "LOB" signifie "Large Object",
@@ -41,11 +54,9 @@ public class User {
     // facilement via les protocoles de communication tels que HTTP.
 
     private byte[] picture;
-
     private String mail;
     private String city;
     private int county;
-    private String password;
 
     @OneToMany(mappedBy="user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Announcement> userAnnouncements;

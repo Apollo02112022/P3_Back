@@ -167,7 +167,7 @@ public class UserController {
         // Etape 2 Rechercher dans la base de données la correspondance du mot de
         // passe de l'utilisateur
         String passwordFromFront = userDataFromFront.getPassword();
-        System.out.println(passwordFromFront + userDataFromFront.getPassword());
+        System.out.println("@@@@@@@@  Mot de passe :    " + passwordFromFront + userDataFromFront.getPassword());
         // S'ils correspondent, générer un token pour cet utilisateur
         if (passwordFromFront.equals(userInDb.getPassword())) { 
             String token = tokenGenerator.generateToken(userDataFromFront.getPseudo(), userInDb.getId());

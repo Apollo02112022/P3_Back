@@ -40,7 +40,11 @@ public class AnnouncementController {
     @Autowired
     private UserRepository userRepository;
    
-
+    // // READ
+    // @GetMapping("/offer-a-barter") // api/Announcements GET Liste des annonces
+    // public ResponseEntity<?> getAnnouncements() {
+    //     return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    // }
     
     // CREATE
     @PostMapping("/offer-a-barter")
@@ -53,7 +57,10 @@ public class AnnouncementController {
 
         byte[] pictureInByteForm2;
 
+        System.out.println("&&&&&&&&&&&&&&&&&&&&&&&" + announcementDto.getDescription());
         try {
+            System.out.println("Herreeeeeeeedc" + announcementDto.getAnnouncement_picture());
+            // Pas de picture ici, il faut savoir pourquoi, il n'y en a pas 
             pictureInByteForm2 = ImageUtil.compressImage(announcementDto.getAnnouncement_picture().getBytes());
             announcement.setAnnouncement_picture(pictureInByteForm2);
         } catch (IOException e) {
@@ -64,7 +71,7 @@ public class AnnouncementController {
     }
        // Récupération de l'image d'annonce d'un utilisateur.
     //    @CrossOrigin(origins = "http://localhost:4200")
-       @GetMapping("/offer-a-barter/{id}/image")
+       @GetMapping("/barters/{id}/image")
        public ResponseEntity<byte[]> getAnnouncementPictureById(@PathVariable Long id) {
            // Recherche de l'annonce correspondant à l'ID fourni dans la base de données.
            Optional<Announcement> annonce = announcementRepository.findById(id);
@@ -101,13 +108,6 @@ public class AnnouncementController {
     public List<Announcement> findAnnouncementByUserId(@PathVariable Long userid) {
         Optional<User> optionalUser = userRepository.findById(userid);
          return optionalUser.get().getUserAnnouncements();
-    }
-
-    @GetMapping("/barters/category/{categoryId}")
-    public List<Announcement> getAnnouncementsByCategory(@PathVariable Long categoryId) {
-        Category category = new Category();
-        category.setId(categoryId);
-        return announcementRepository.findByCategory(category);
     }
     
     @GetMapping("/barters/{id}")

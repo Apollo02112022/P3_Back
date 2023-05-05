@@ -4,6 +4,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 import org.springframework.web.multipart.MultipartFile;
 import lombok.Data;
 
@@ -18,6 +21,8 @@ public class AnnouncementDto {
     @Id // clé primaire 
     @GeneratedValue(strategy = GenerationType.IDENTITY)// genere automatiquement l'id
     private Long id;
+    @NotBlank
+    @Size(max=250)
     private String description;
     
     @Lob //indique que la propriété "announcement_picture" est de type BLOB (Binary Large Object)

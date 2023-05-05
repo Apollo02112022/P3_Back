@@ -40,31 +40,55 @@ public class AnnouncementController {
     @Autowired
     private UserRepository userRepository;
    
-
+    // // READ
+    // @GetMapping("/offer-a-barter") // api/Announcements GET Liste des annonces
+    // public ResponseEntity<?> getAnnouncements() {
+    //     return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    // }
     
     // CREATE
     @PostMapping("/offer-a-barter")
-    public ResponseEntity<?> createAnnouncement(@ModelAttribute AnnouncementDto announcementDto, @RequestParam Long userid) {
+    public ResponseEntity<?> createAnnouncement(@ModelAttribute AnnouncementDto announcementDto,
+            @RequestParam Long userid) {
+        // creation d'un nouvel objet announcement()
         Announcement announcement = new Announcement();
+        // récupère la description de l'annonce depuis l'objet "AnnouncementDto"
+        // et on la définit comme description de l'annonce
         String description = announcementDto.getDescription();
         announcement.setDescription(description);
+
+        // récupère l'objet "User" associé à l'identifiant d'utilisateur fourni
+        // et on le définit comme propriétaire de l'annonce
         User userAnnouncement = userRepository.findById(userid).get();
         announcement.setUser(userAnnouncement);
 
+        // initialise une variable pour stocker l'image compressée de l'annonce
         byte[] pictureInByteForm2;
 
+        System.out.println("&&&&&&&&&&&&&&&&&&&&&&&" + announcementDto.getDescription());
         try {
+            // compresse l'image fournie dans l'objet "announcementDto"
+            // en utilisant une méthode utilitaire appelée "ImageUtil.compressImage()"
             pictureInByteForm2 = ImageUtil.compressImage(announcementDto.getAnnouncement_picture().getBytes());
+
+            // On définit le tableau d'octets résultant comme valeur du champ
+            // "announcement_picture"
             announcement.setAnnouncement_picture(pictureInByteForm2);
         } catch (IOException e) {
+            // Si la compression échoue,affichage des erreurs
             e.printStackTrace();
         }
+
+        // enregistre l'objet "Announcement"
         announcementRepository.save(announcement);
-        return new ResponseEntity<>(announcement,HttpStatus.CREATED);
+        // retourne un objet ResponseEntity avec la nouvelle annonce créée et un code de
+        // statut HTTP de CREATED (201)
+        return new ResponseEntity<>(announcement, HttpStatus.CREATED);
     }
+
        // Récupération de l'image d'annonce d'un utilisateur.
     //    @CrossOrigin(origins = "http://localhost:4200")
-       @GetMapping("/offer-a-barter/{id}/image")
+       @GetMapping("/barters/{id}/image")
        public ResponseEntity<byte[]> getAnnouncementPictureById(@PathVariable Long id) {
            // Recherche de l'annonce correspondant à l'ID fourni dans la base de données.
            Optional<Announcement> annonce = announcementRepository.findById(id);
@@ -100,20 +124,14 @@ public class AnnouncementController {
     @GetMapping("/users/{userid}/barters") // user/:userid/barters GET Liste des annonces
     public List<Announcement> findAnnouncementByUserId(@PathVariable Long userid) {
         Optional<User> optionalUser = userRepository.findById(userid);
-         return optionalUser.get().getUserAnnouncements();
-    }
-
-    @GetMapping("/barters/category/{categoryId}")
-    public List<Announcement> getAnnouncementsByCategory(@PathVariable Long categoryId) {
-        Category category = new Category();
-        category.setId(categoryId);
-        return announcementRepository.findByCategory(category);
+        return optionalUser.get().getUserAnnouncements();
     }
     
     @GetMapping("/barters/{id}")
     public Announcement getAnnouncementById(@PathVariable Long id) {
         return announcementRepository.findById(id).orElse(null);
     }
+
     // UPDATE
     @PutMapping("/barters/{id}") // api/Announcements/:AnnouncementsId PUT Mettre à jours une annonce
     public Announcement UpdateAnnouncement(@PathVariable Long id, @RequestBody Announcement announcement) {
@@ -125,7 +143,8 @@ public class AnnouncementController {
     }
 
     // DELETE
-    @DeleteMapping("/users/{userid}/barters/{annoucementid}") // /users/{userid}/barters/{annoucementid} DELETE supprime une annonce 
+    @DeleteMapping("/users/{userid}/barters/{annoucementid}") // /users/{userid}/barters/{annoucementid} DELETE supprime
+                                                              // une annonce
     public ResponseEntity<?> deleteUserAnnouncement(@PathVariable Long userid, @PathVariable Long annoucementid) {
 
         Optional<User> optionalUser = userRepository.findById(userid);
@@ -135,11 +154,11 @@ public class AnnouncementController {
         List<Announcement> optionalFavoritesList = optionalUser.get().getFavorites();
         List<Announcement> optionalNotificationsList = optionalUser.get().getNotifications();
 
-        if(optionalUser.isPresent() && optinalAnnouncement.isPresent()){
+        if (optionalUser.isPresent() && optinalAnnouncement.isPresent()) {
 
-            for(Announcement userAnnoncementToDelete : optionalUserAnnouncementList){
-                if(Objects.equals(userAnnoncementToDelete, optinalAnnouncement.get())){
-    
+            for (Announcement userAnnoncementToDelete : optionalUserAnnouncementList) {
+                if (Objects.equals(userAnnoncementToDelete, optinalAnnouncement.get())) {
+
                     Announcement announcementToDelete = optinalAnnouncement.get();
 
                     optionalUserAnnouncementList.remove(userAnnoncementToDelete);
@@ -150,16 +169,16 @@ public class AnnouncementController {
                     announcementToDelete.setCategory(null);
                     announcementToDelete.setUser(null);
 
-
                     announcementRepository.delete(announcementToDelete);
-    
+
                     return new ResponseEntity<String>("Your announcement has deleted", HttpStatus.ACCEPTED);
                 }
             }
         }
 
         return new ResponseEntity<String>("Try again", HttpStatus.NOT_ACCEPTABLE);
-}
+    }
+
     @DeleteMapping("/barters/{id}") // api/users/:usersId DELETE supprime une annonce
     public boolean deleteAnnouncement(@PathVariable Long id) {
         announcementRepository.deleteById(id);

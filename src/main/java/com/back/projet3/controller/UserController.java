@@ -266,7 +266,7 @@ public class UserController {
 
     // api/users/{userid}/profil DELETE supprime un utilisateur
     @DeleteMapping("/users/{userid}/profil")
-    public boolean deleteUser(@PathVariable Long userid) {
+    public ResponseEntity<?> deleteUser(@PathVariable Long userid) {
 
         Optional<User> optionalUser = userRepository.findById(userid);
         User userToDelete=optionalUser.get();
@@ -291,9 +291,9 @@ public class UserController {
         //  et enfin on supprime l'utilisateur
            userRepository.deleteById(userid);
            
-           return true;
+           return new ResponseEntity<>("Your account and all data as deleted", HttpStatus.OK);
         }else{
-            return false;
+            return new ResponseEntity<>("Error", HttpStatus.BAD_REQUEST);
         }
 
     }

@@ -25,11 +25,11 @@ public class Notification {
      // => On liste les utilisateurs qui répondent à des annonces.
 
     //  C'est pour éviter une boucle infinie d'hibernate lorsqu'on récupère une notification
-     @JsonBackReference(value ="user_notification")
+     @JsonBackReference(value ="userNotification")
     // Données chargées que lorsque l'entité sera utilisée 
      @ManyToOne(fetch = FetchType.LAZY)
      @JoinColumn(name="user_id", referencedColumnName = "id")
-     private Notification userNotification;
+     private User user;
      // => on joint la colonne user à notification.
 
 

@@ -41,9 +41,6 @@ public class Notification {
      private User user;
      // => on joint la colonne user à notification.
     //  @JsonBackReference(value = "user")
-     @ManyToOne(fetch = FetchType.LAZY)
-     @JoinColumn(name = "user_id")
-     private User user;
 
 }
 

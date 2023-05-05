@@ -98,7 +98,7 @@ public class UserController {
 
         if (userRepository.findByPseudo(userDto.getPseudo()) != null) {
             return new ResponseEntity<>(
-                    "Un utilisateur avec le nom d'utilisateur " + userDto.getPseudo() + " existe déjà.",
+                    "Un utilisateur avec le pseudo " + userDto.getPseudo() + " existe déjà.",
                     HttpStatus.CONFLICT);
         }
 

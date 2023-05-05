@@ -10,7 +10,7 @@ public class PasswordValidator implements ConstraintValidator<ValidPassword, Str
             return false;
         }
 
-        return password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=_\\-!])(?=\\S+$).{8,}$");
+        return password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=_\\-!*''()\\[\\]{}\",.;:£¤µ€?|<>\\\\/])(?=\\S+$).{8,}$");
     }
     
 }

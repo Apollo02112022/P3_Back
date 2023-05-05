@@ -26,7 +26,7 @@ public class Notification {
 
     // @ManyToMany(mappedBy = "notifications")
     // private List<User> user_answers = new ArrayList<>();
-     // => On liste les utilisateurs qui répondent à des annonces.
+    // => On liste les utilisateurs qui répondent à des annonces.
 
     //  C'est pour éviter une boucle infinie d'hibernate lorsqu'on récupère une notification
     //  @JsonBackReference(value ="user_notification")
@@ -34,6 +34,11 @@ public class Notification {
     //  @ManyToOne
     //  @JoinColumn(name="user_id")
     //  private User user;
+     @JsonBackReference(value ="userNotification")
+    // Données chargées que lorsque l'entité sera utilisée 
+     @ManyToOne(fetch = FetchType.LAZY)
+     @JoinColumn(name="user_id", referencedColumnName = "id")
+     private User user;
      // => on joint la colonne user à notification.
     //  @JsonBackReference(value = "user")
      @ManyToOne(fetch = FetchType.LAZY)

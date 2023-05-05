@@ -40,17 +40,16 @@ public class Config {
         .authenticationEntryPoint(jwtEntryPoint)
         .and()
         .authorizeRequests()
-        .antMatchers("/", "/barters", "/barters/*/image", "/login", "/signup")
-        .permitAll()
-        .anyRequest().authenticated();
-
-
+        .antMatchers("/", "/barters", "/offer-a-barter", "/login", "/signup")
+        .permitAll();
+        // .anyRequest().authenticated();
+        
     // where to implement the middleware filter
     http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     return http.build();
   }
 
-
+  
   @Bean
   PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();

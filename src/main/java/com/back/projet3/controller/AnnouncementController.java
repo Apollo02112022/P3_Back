@@ -61,11 +61,10 @@ public class AnnouncementController {
         // et on le définit comme propriétaire de l'annonce
         User userAnnouncement = userRepository.findById(userid).get();
         announcement.setUser(userAnnouncement);
-
         // initialise une variable pour stocker l'image compressée de l'annonce
         byte[] pictureInByteForm2;
 
-        System.out.println("&&&&&&&&&&&&&&&&&&&&&&&" + announcementDto.getDescription());
+        System.out.println("&&&&&&&&&&&&&&&&&&" + announcementDto.getDescription());
         try {
             // compresse l'image fournie dans l'objet "announcementDto"
             // en utilisant une méthode utilitaire appelée "ImageUtil.compressImage()"
@@ -117,7 +116,6 @@ public class AnnouncementController {
     // READ
     @GetMapping("/barters") // api/Announcements GET Liste des annonces
     public List<Announcement> findAllAnnouncement() {
-
         return announcementRepository.findAll();
     }
 

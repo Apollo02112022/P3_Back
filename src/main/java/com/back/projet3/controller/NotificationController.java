@@ -45,9 +45,11 @@ import java.io.IOException;
     public List<Notification> findAllNotification(){
     return notificationRepository.findAllNotification();
 }
-    @GetMapping("/notifications/{id}")
-    public Notification findNotification(@PathVariable Long id){
-    return notificationRepository.findById(id).get();
+    @GetMapping("/notifications/{userid}")
+    public List<Notification> findNotification(@PathVariable Long userid){
+      User user = userRepository.findById(userid).get();
+      
+      return user.getUserNotification();
 }
 //DELETE
     @DeleteMapping("/notifications/{id}") //api/users/:usersId DELETE supprime une notification
@@ -74,7 +76,7 @@ private final Map<String, SseEmitter> userEmitters = new ConcurrentHashMap<>();
 
 @PostMapping("/postMessage")
 // Méthode @postMapping qui sera appelé lors d'une requête http post avec url
-    public ResponseEntity<?> postMessage(@RequestBody NotificationDto message, @RequestParam("userAnnounceId") Long userAnnounceId) {
+    public ResponseEntity<?> postMessage(@RequestBody NotificationDto message, @RequestParam Long userAnnounceId) {
     // @requestParam récupère le message à envoyer et l'id qu'il doit recevoir
         SseEmitter emitter = userEmitters.get((userAnnounceId).toString());
         System.out.println("Notif gg");

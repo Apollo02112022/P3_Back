@@ -38,9 +38,6 @@ public class Notification {
     // Données chargées que lorsque l'entité sera utilisée 
      // => on joint la colonne user à notification.
     //  @JsonBackReference(value = "user")
-     @ManyToOne(fetch = FetchType.LAZY)
-     @JoinColumn(name = "user_id")
-     private User user;
 
 }
 

@@ -40,9 +40,9 @@ public class Config {
         .authenticationEntryPoint(jwtEntryPoint)
         .and()
         .authorizeRequests()
-        .antMatchers("/", "/barters", "/offer-a-barter", "/login", "/signup")
-        .permitAll();
-        // .anyRequest().authenticated();
+        .antMatchers("/", "/barters", "/offer-a-barter", "/login", "/signup","/barters/*/image")
+        .permitAll()
+        .anyRequest().authenticated();
         
     // where to implement the middleware filter
     http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

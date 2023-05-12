@@ -1,16 +1,8 @@
 package com.back.projet3.entity;
 
 import javax.persistence.Entity;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
-
-import java.util.List;
-
 import javax.persistence.*;
-
-// import java.util.List;
-// import java.util.ArrayList;
-
 import lombok.Data;
 
 @Data

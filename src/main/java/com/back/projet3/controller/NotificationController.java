@@ -1,27 +1,19 @@
 package com.back.projet3.controller;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import com.back.projet3.dto.NotificationDto;
 import com.back.projet3.entity.Notification;
 import com.back.projet3.entity.User;
 import com.back.projet3.repository.NotificationRepository;
 import com.back.projet3.repository.UserRepository;
-import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
-
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
-
-
 import java.io.IOException;
 
 
@@ -77,18 +69,18 @@ private final Map<String, SseEmitter> userEmitters = new ConcurrentHashMap<>();
     public ResponseEntity<?> postMessage(@RequestBody NotificationDto message, @RequestParam("userAnnounceId") Long userAnnounceId) {
     // @requestParam récupère le message à envoyer et l'id qu'il doit recevoir
         SseEmitter emitter = userEmitters.get((userAnnounceId).toString());
-        System.out.println("Notif gg");
+        System.out.println("&&&&&&&&&&&&&& Notif gg");
 
         // emitter récupère l'id de l'utilisateur (userEmitters)
         if (emitter != null) {
-        System.out.println("Notif OK");
+        System.out.println("&&&&&&&&&&&&&&&&& Notif OK");
 
         // si l'emitter n'est pas null
             try {
                 emitter.send(message, MediaType.APPLICATION_JSON);
                 // signifie que l'utilisateur est connecté et qu'un émetteur à été créé pour lui => méthode emitter.send
             } catch (IOException error) {
-        System.out.println("Notif not");
+        System.out.println("&&&&&&&&&&&&&&& Notif not");
 
                 // gère les exceptions (erreur)
                 userEmitters.remove((userAnnounceId).toString());

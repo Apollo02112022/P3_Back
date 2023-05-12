@@ -24,8 +24,6 @@ import com.back.projet3.security.JwtGenerator;
 import com.back.projet3.security.JwtFilter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-
-import java.util.Collection;
 import java.util.HashMap;
 import org.springframework.http.HttpHeaders;
 import com.back.projet3.dto.UserDto;

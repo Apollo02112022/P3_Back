@@ -26,12 +26,19 @@ public class CustomUserDetails implements UserDetailsService {
   public User loadUserByUsername(String pseudo) throws UsernameNotFoundException {
 
     com.back.projet3.entity.User user = userRepository.findUserByPseudo(pseudo);
+    
     // com.back.projet3.entity.User userId = userRepository.findUserById(id);
+    Collection<SimpleGrantedAuthority> roles = new ArrayList<SimpleGrantedAuthority>();
+
     if (user == null) {
       throw new UsernameNotFoundException("J'ai pas trouvé le pseudo pourtant j'ai essayé hein 🥵");
-    }
+    }else if("ADMIN".equals(user.getRole())){
 
-    Collection<SimpleGrantedAuthority> roles = new ArrayList<SimpleGrantedAuthority>();
+      roles.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+
+      return new org.springframework.security.core.userdetails.User(user.getLastname(), user.getPassword(), roles);
+    }
+    
     roles.add(new SimpleGrantedAuthority("USER"));
     
     return new org.springframework.security.core.userdetails.User(user.getLastname(), user.getPassword(), roles);

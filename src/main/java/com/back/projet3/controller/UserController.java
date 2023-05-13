@@ -112,7 +112,7 @@ public class UserController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        
         // J'enregistre le nouvel utilisateur.
 
         userRepository.save(user);

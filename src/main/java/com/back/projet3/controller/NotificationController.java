@@ -52,7 +52,7 @@ import java.io.IOException;
       return user.getUserNotification();
 }
 //DELETE
-    @DeleteMapping("/notifications/{id}") //api/users/:usersId DELETE supprime une notification
+    @DeleteMapping("/notifications/{id}") //api/notifications/{id} DELETE supprime une notification
     public boolean deleteUser(@PathVariable Long id){
     notificationRepository.deleteById(id);
     return true;

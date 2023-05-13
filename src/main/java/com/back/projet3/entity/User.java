@@ -21,7 +21,7 @@ import lombok.Data;
 
 // On utilise jsonignore pour ignorer les variables qui créent une boucle infinie.
 
-@JsonIgnoreProperties({"userAnnouncements", "userFavorites", "userAnswers"})
+@JsonIgnoreProperties({"userAnnouncements", "userAnswers"})
 
 public class User {
 
@@ -63,12 +63,6 @@ public class User {
 
 // <----- Relation Many to One concernant les tables user et announcement ----->
 
-    @ManyToMany
-    @JoinTable(name = "favorite",
-         joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-         inverseJoinColumns = @JoinColumn(name = "announcement_id", referencedColumnName = "id"))
-    private List<Announcement> favorites = new ArrayList<>();
-    // => On liste les annonces qui sont en favori.
 
 // <----- Relation Many to Many concernant les tables user, announcement et notification ----->
 

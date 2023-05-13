@@ -41,8 +41,4 @@ public class Announcement {
     private List<User> user_answers = new ArrayList<>();
     // => On liste les utilisateurs qui ont créé des réponses.
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
-    @JsonIgnore
-    private Category category;
 }

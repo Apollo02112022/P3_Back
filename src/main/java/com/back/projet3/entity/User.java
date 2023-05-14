@@ -58,6 +58,8 @@ public class User {
     private String city;
     private int county;
 
+    private String role;
+
     @OneToMany(mappedBy="user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Announcement> userAnnouncements;
 

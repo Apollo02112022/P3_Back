@@ -87,6 +87,8 @@ public class UserController {
         user.setCounty(county);
         String mail = userDto.getMail();
         user.setMail(mail);
+        // on met le role 
+        user.setRole("USER");
 
         // Je vérifie si un utilisateur se réinscrit avec la même adresse mail et/ou le
         // même pseudo.

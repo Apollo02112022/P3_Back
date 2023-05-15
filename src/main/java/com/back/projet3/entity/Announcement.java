@@ -33,16 +33,8 @@ public class Announcement {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @ManyToMany(mappedBy = "favorites")
-    private List<User> user_favorites = new ArrayList<>();
-    // => On liste les utilisateurs qui ont des favoris.
-
     @ManyToMany(mappedBy = "answers")
     private List<User> user_answers = new ArrayList<>();
     // => On liste les utilisateurs qui ont créé des réponses.
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
-    @JsonIgnore
-    private Category category;
 }

@@ -37,7 +37,6 @@ public class User {
     private String pseudo;
 
     @NotBlank
-    @Size(min=8)
     @ValidPassword
     private String password;
 

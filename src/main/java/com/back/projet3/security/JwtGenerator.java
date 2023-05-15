@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  * @Component permet à spring de detecter notre class custom
@@ -15,6 +16,9 @@ import io.jsonwebtoken.SignatureAlgorithm;
  */
 @Component
 public class JwtGenerator {
+
+  @Value("${jwt.secret}")
+  private String jwtSecret;
 
   // ADD_ROLE_TO_USER_AND_TOKEN
   @Autowired
@@ -33,7 +37,6 @@ public class JwtGenerator {
     Date currentDate = new Date();
     // 86,400,000 = 24H en millliseconds
     Date expireDate = new Date(currentDate.getTime() + 86400000);
-    
     System.out.println("@@@@@@@@@@@@@@@@@@@  Date de génération de Token   " + expireDate.toString());
 
     // Implémentation à récupérer d'internet
@@ -41,14 +44,16 @@ public class JwtGenerator {
         .setClaims(claims)
         .setIssuedAt(new Date())
         .setExpiration(expireDate)
-        .signWith(SignatureAlgorithm.HS512, "secret") 
+        .signWith(SignatureAlgorithm.HS512, jwtSecret) 
+        // .signWith(SignatureAlgorithm.HS512, "secret") 
         .compact();
     return token;
   }
 
   public Boolean validateToken(String token) {
     try {
-      Jwts.parser().setSigningKey("secret").parseClaimsJws(token);
+      Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
+      // Jwts.parser().setSigningKey("secret").parseClaimsJws(token);
       return true;
     } catch (Exception err) {
       throw new AuthenticationCredentialsNotFoundException("Le token n'est pas bon ou est expiré");
@@ -57,11 +62,12 @@ public class JwtGenerator {
 
   public String getUserNameFromToken(String token) {
     Claims claims = Jwts.parser()
-        .setSigningKey("secret")
+        .setSigningKey(jwtSecret)
+        // .setSigningKey("secret")
         .parseClaimsJws(token)
         .getBody();
         System.out.println("@@@@@@@@@@@@@@@@@@@@@@@" + claims.getSubject());
     return claims.getSubject();
   }
 
-}
+} 

@@ -20,7 +20,7 @@ public class JwtGenerator {
   @Autowired
   CustomUserDetails customUserDetails;
 
-  public String generateToken(String pseudo, Number id) {
+  public String generateToken(String pseudo, Number id, String role) {
 
     // claims.put("role", role); // add role claim
     // Map<String, String> claims = new HashMap<String, String>();
@@ -30,6 +30,7 @@ public class JwtGenerator {
     Claims claims = Jwts.claims().setSubject(pseudo);
     claims.put("userId", id);
     claims.put("pseudo",pseudo);
+    claims.put("role",role);
     Date currentDate = new Date();
     // 86,400,000 = 24H en millliseconds
     Date expireDate = new Date(currentDate.getTime() + 86400000);

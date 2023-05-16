@@ -1,16 +1,7 @@
 package com.back.projet3.entity;
-
 import javax.persistence.Entity;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
-
-import java.util.List;
-
 import javax.persistence.*;
-
-// import java.util.List;
-// import java.util.ArrayList;
-
 import lombok.Data;
 
 @Data
@@ -24,7 +15,17 @@ public class Notification {
     private String tel;
     private String mail;
 
-    // @ManyToMany(mappedBy = "notifications")
+ 
+     @JsonBackReference(value ="userNotification")
+    // Données chargées que lorsque l'entité sera utilisée 
+     @ManyToOne(fetch = FetchType.LAZY)
+     @JoinColumn(name="user_id", referencedColumnName = "id")
+     private User user;
+     // => on joint la colonne user à notification.
+    //  @JsonBackReference(value = "user")
+}
+
+   // @ManyToMany(mappedBy = "notifications")
     // private List<User> user_answers = new ArrayList<>();
     // => On liste les utilisateurs qui répondent à des annonces.
 
@@ -34,15 +35,5 @@ public class Notification {
     //  @ManyToOne
     //  @JoinColumn(name="user_id")
     //  private User user;
-     @JsonBackReference(value ="userNotification")
-    // Données chargées que lorsque l'entité sera utilisée 
-     @ManyToOne(fetch = FetchType.LAZY)
-     @JoinColumn(name="user_id", referencedColumnName = "id")
-     private User user;
-     // => on joint la colonne user à notification.
-    //  @JsonBackReference(value = "user")
-
-}
-
 
 

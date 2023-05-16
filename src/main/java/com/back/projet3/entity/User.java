@@ -37,7 +37,6 @@ public class User {
     private String pseudo;
 
     @NotBlank
-    @Size(min=8)
     @ValidPassword
     private String password;
 
@@ -57,6 +56,8 @@ public class User {
     private String mail;
     private String city;
     private int county;
+
+    private String role;
 
     @OneToMany(mappedBy="user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Announcement> userAnnouncements;

@@ -40,8 +40,9 @@ public class Config {
         .authenticationEntryPoint(jwtEntryPoint)
         .and()
         .authorizeRequests()
-        .antMatchers("/","/test", "/barters", "/offer-a-barter", "/login", "/signup","/barters/{id}/image","/streamMessages")
+        .antMatchers("/", "/barters", "/offer-a-barter", "/login", "/signup","/barters/{id}/image","/streamMessages","/custumLogout")
         .permitAll()
+        .antMatchers("/users").hasRole("ADMIN")
         .anyRequest().authenticated(); 
         
     // where to implement the middleware filter

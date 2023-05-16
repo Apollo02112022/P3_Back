@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,13 +20,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.back.projet3.entity.Announcement;
-import com.back.projet3.entity.Category;
 import com.back.projet3.entity.User;
-import com.back.projet3.entity.Announcement;
 import com.back.projet3.repository.AnnouncementRepository;
-import com.back.projet3.repository.CategoryRepository;
 import com.back.projet3.repository.UserRepository;
-import com.back.projet3.repository.AnnouncementRepository;
 import com.back.projet3.util.ImageUtil;
 import com.back.projet3.dto.AnnouncementDto;
 
@@ -149,7 +144,6 @@ public class AnnouncementController {
         Optional<Announcement> optinalAnnouncement = announcementRepository.findById(annoucementid);
         List<Announcement> optionalUserAnnouncementList = optionalUser.get().getUserAnnouncements();
         List<Announcement> optionalAnswersList = optionalUser.get().getAnswers();
-        List<Announcement> optionalFavoritesList = optionalUser.get().getFavorites();
         List<Announcement> optionalNotificationsList = optionalUser.get().getNotifications();
 
         if (optionalUser.isPresent() && optinalAnnouncement.isPresent()) {
@@ -161,10 +155,8 @@ public class AnnouncementController {
 
                     optionalUserAnnouncementList.remove(userAnnoncementToDelete);
                     optionalAnswersList.remove(userAnnoncementToDelete);
-                    optionalFavoritesList.remove(userAnnoncementToDelete);
                     optionalNotificationsList.remove(userAnnoncementToDelete);
 
-                    announcementToDelete.setCategory(null);
                     announcementToDelete.setUser(null);
 
                     announcementRepository.delete(announcementToDelete);

@@ -90,6 +90,8 @@ public class UserController {
         user.setCounty(county);
         String mail = userDto.getMail();
         user.setMail(mail);
+        // on met le role 
+        user.setRole("USER");
 
         // Je vérifie si un utilisateur se réinscrit avec la même adresse mail et/ou le
         // même pseudo.
@@ -115,7 +117,7 @@ public class UserController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        
         // J'enregistre le nouvel utilisateur.
 
         userRepository.save(user);
@@ -180,7 +182,7 @@ public class UserController {
         System.out.println("@@@@@@@@  Mot de passe :    " + passwordFromFront + userDataFromFront.getPassword());
         // S'ils correspondent, générer un token pour cet utilisateur
         if (passwordEncoder.matches(passwordFromFront, userInDb.getPassword())) { 
-            String token = tokenGenerator.generateToken(userDataFromFront.getPseudo(), userInDb.getId());
+            String token = tokenGenerator.generateToken(userDataFromFront.getPseudo(), userInDb.getId(),userInDb.getRole() );
             map.put("token", token);
             map.put("message", "Connexion réussie");
             return new ResponseEntity<>(map, HttpStatus.OK);

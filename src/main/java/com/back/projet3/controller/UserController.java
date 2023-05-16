@@ -24,8 +24,6 @@ import com.back.projet3.security.JwtGenerator;
 import com.back.projet3.security.JwtFilter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-
-import java.util.Collection;
 import java.util.HashMap;
 import org.springframework.http.HttpHeaders;
 import com.back.projet3.dto.UserDto;
@@ -57,6 +55,11 @@ public class UserController {
     private NotificationRepository notificationRepository;
 
     // Création d'un nouvel utilisateur dans BDD via le formulaire d'inscription.
+
+    @GetMapping("/test")
+    public String test() {
+        return "Hello";
+    }
 
     @PostMapping("/signup")
     public ResponseEntity<?> createUser(@Valid @ModelAttribute UserDto userDto) {

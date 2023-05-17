@@ -121,8 +121,13 @@ public class AnnouncementController {
     }
     
     @GetMapping("/barters/{id}")
-    public Announcement getAnnouncementById(@PathVariable Long id) {
-        return announcementRepository.findById(id).orElse(null);
+    public AnnouncementDto getAnnouncementById(@PathVariable Long id) {
+         Announcement annonce = announcementRepository.findById(id).orElse(null);
+         AnnouncementDto annonceToSend = new AnnouncementDto();
+         annonceToSend.setUser(annonce.getUser());
+         annonceToSend.setDescription(annonce.getDescription());
+         annonceToSend.setId(annonce.getId());
+        return annonceToSend;
     }
 
     // UPDATE

@@ -57,17 +57,6 @@ import java.io.IOException;
     notificationRepository.deleteById(id);
     return true;
 }
-// quelques exemples :
-// private List<String> array = new ArrayList();
-
-// obj: { name: string, age: number} = {
-//     name : "Laurie",
-//     age : 23,
-//   }
-//   arr: string[]= [ "Laurie", "Yvens" ]
-// string => clé
-// name => clé
-
 
 private final Map<String, SseEmitter> userEmitters = new ConcurrentHashMap<>();
 // variable privée accessible que dans cette classe, final car ne pas être modifié une fois qu'elle a été initialisée.

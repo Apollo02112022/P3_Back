@@ -1,4 +1,4 @@
-package com.back.projet3.Dto;
+package com.back.projet3.dto;
 
 import javax.validation.constraints.Email;
 

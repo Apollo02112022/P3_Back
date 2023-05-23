@@ -34,12 +34,7 @@ public class AnnouncementController {
     private AnnouncementRepository announcementRepository;
     @Autowired
     private UserRepository userRepository;
-   
-    // // READ
-    // @GetMapping("/offer-a-barter") // api/Announcements GET Liste des annonces
-    // public ResponseEntity<?> getAnnouncements() {
-    //     return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    // }
+  
     
     // CREATE
     @PostMapping("/offer-a-barter")

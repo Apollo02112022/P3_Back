@@ -33,8 +33,4 @@ public class Announcement {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @ManyToMany(mappedBy = "answers")
-    private List<User> user_answers = new ArrayList<>();
-    // => On liste les utilisateurs qui ont créé des réponses.
-
 }

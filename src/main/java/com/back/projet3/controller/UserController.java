@@ -12,8 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import com.back.projet3.Dto.PasswordDto;
-import com.back.projet3.Dto.MailDto;
+
 import com.back.projet3.entity.User;
 import com.back.projet3.entity.BlackListTokenEntity;
 import com.back.projet3.entity.Notification;
@@ -28,6 +27,9 @@ import org.springframework.http.MediaType;
 import java.util.Collection;
 import java.util.HashMap;
 import org.springframework.http.HttpHeaders;
+
+import com.back.projet3.dto.MailDto;
+import com.back.projet3.dto.PasswordDto;
 import com.back.projet3.dto.UserDto;
 import com.back.projet3.util.ImageUtil;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

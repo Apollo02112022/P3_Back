@@ -12,12 +12,6 @@ import com.back.projet3.entity.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    // boolean existsByMail(String mail);
-//     @Query(value = "SELECT * FROM user", nativeQuery = true)
-//     public List<User> findAllUsers();
-// 
-
-
   Boolean existsByPseudo(String pseudo);
   boolean existsByMail(String mail);
   User findUserByPseudo(String pseudo);

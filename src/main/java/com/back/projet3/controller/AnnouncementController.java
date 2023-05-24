@@ -54,7 +54,6 @@ public class AnnouncementController {
         // initialise une variable pour stocker l'image compressée de l'annonce
         byte[] pictureInByteForm2;
 
-        System.out.println("&&&&&&&&&&&&&&&&&&" + announcementDto.getDescription());
         try {
             // compresse l'image fournie dans l'objet "announcementDto"
             // en utilisant une méthode utilitaire appelée "ImageUtil.compressImage()"

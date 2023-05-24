@@ -33,7 +33,6 @@ public class JwtGenerator {
     Date currentDate = new Date();
     // 86,400,000 = 24H en millliseconds
     Date expireDate = new Date(currentDate.getTime() + 86400000);
-    System.out.println("@@@@@@@@@@@@@@@@@@@  Date de génération de Token   " + expireDate.toString());
 
     // Implémentation à récupérer d'internet
     String token = Jwts.builder()

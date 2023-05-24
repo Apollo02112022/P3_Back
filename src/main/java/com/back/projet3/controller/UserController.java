@@ -63,7 +63,6 @@ public class UserController {
 
         User user = new User();
 
-        // System.out.println("@@@@@@@@@@" + userDto.getPassword());
 
         // J'encode le mot de passe de ma classe UserDto et je l'attribue au mot de
         // passe de ma classe User.
@@ -176,7 +175,6 @@ public class UserController {
         // Etape 2 Rechercher dans la base de données la correspondance du mot de
         // passe de l'utilisateur
         String passwordFromFront = userDataFromFront.getPassword();
-        System.out.println("@@@@@@@@  Mot de passe :    " + passwordFromFront + userDataFromFront.getPassword());
         // S'ils correspondent, générer un token pour cet utilisateur
         if (passwordEncoder.matches(passwordFromFront, userInDb.getPassword())) { 
             String token = tokenGenerator.generateToken(userDataFromFront.getPseudo(), userInDb.getId(),userInDb.getRole() );
@@ -193,7 +191,6 @@ public class UserController {
     @PostMapping("custumLogout")
     public ResponseEntity<?> logout(@RequestHeader("Authorization") String bearerToken) {
         // Obtenir le token depuis la requête http
-        System.out.println("@@@@@@@@ LOGOUT !!!!!    " + bearerToken);
         String token = tokenFilter.getTokenString(bearerToken);
         BlackListTokenEntity tokenToBlackList = new BlackListTokenEntity();
         tokenToBlackList.setToken(token);

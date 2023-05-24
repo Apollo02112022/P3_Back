@@ -65,18 +65,15 @@ private final Map<String, SseEmitter> userEmitters = new ConcurrentHashMap<>();
     public ResponseEntity<?> postMessage(@RequestBody NotificationDto message, @RequestParam Long userAnnounceId) {
     // @requestParam récupère le message à envoyer et l'id qu'il doit recevoir
         SseEmitter emitter = userEmitters.get((userAnnounceId).toString());
-        System.out.println("Notif gg");
 
         // emitter récupère l'id de l'utilisateur (userEmitters)
         if (emitter != null) {
-        System.out.println("Notif OK");
 
         // si l'emitter n'est pas null
             try {
                 emitter.send(message, MediaType.APPLICATION_JSON);
                 // signifie que l'utilisateur est connecté et qu'un émetteur à été créé pour lui => méthode emitter.send
             } catch (IOException error) {
-        System.out.println("Notif not");
 
                 // gère les exceptions (erreur)
                 userEmitters.remove((userAnnounceId).toString());

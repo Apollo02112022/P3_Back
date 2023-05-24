@@ -2,7 +2,6 @@ package com.back.projet3.entity;
 
 import com.back.projet3.validator.ValidPassword;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;

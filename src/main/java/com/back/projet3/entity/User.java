@@ -64,24 +64,6 @@ public class User {
 // <----- Relation Many to One concernant les tables user et announcement ----->
 
 
-// <----- Relation Many to Many concernant les tables user, announcement et notification ----->
-
-    @ManyToMany
-    @JoinTable(name = "answer",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "announcement_id", referencedColumnName = "id"))
-    private List<Announcement> answers = new ArrayList<>();
-    // => On liste les annonces qui ont une réponse.
-
-    @ManyToMany
-    @JoinTable(name = "answer",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "notification_id", referencedColumnName = "id"))
-    private List<Announcement> notifications = new ArrayList<>();
-    // => On liste les annonces qui ont une notification.
-
-// <---------->
-
     @OneToMany(mappedBy="user")
     private List<Notification>userNotification;
     // => On liste les notifications reçues par les utilisateurs qui ont créé l'annonce.

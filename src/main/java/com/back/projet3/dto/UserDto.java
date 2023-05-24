@@ -21,9 +21,9 @@ import lombok.Data;
 @Data
 public class UserDto {
     
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    // @Id
+    // @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // private Long id;
     
    // @NotBlank : La chaîne de caractère ne doit pas être vide. Il doit y avoir au moins un caractère 
    // et celui-ci ne doit pas crrespondre à un espace. 

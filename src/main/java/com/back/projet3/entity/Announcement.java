@@ -4,14 +4,10 @@ import java.sql.Timestamp;
 import javax.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 
-import java.util.List;
-import java.util.ArrayList;
 
-// import com.back.projet3.entity.User;
 
 @Data
 @Entity // Table Announcement

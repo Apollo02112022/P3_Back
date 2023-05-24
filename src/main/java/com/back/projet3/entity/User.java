@@ -1,6 +1,5 @@
 package com.back.projet3.entity;
 
-import com.back.projet3.validator.ValidName;
 import com.back.projet3.validator.ValidPassword;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.ArrayList;

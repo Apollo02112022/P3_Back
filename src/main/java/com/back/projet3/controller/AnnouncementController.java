@@ -148,8 +148,8 @@ public class AnnouncementController {
         Optional<User> optionalUser = userRepository.findById(userid);
         Optional<Announcement> optinalAnnouncement = announcementRepository.findById(annoucementid);
         List<Announcement> optionalUserAnnouncementList = optionalUser.get().getUserAnnouncements();
-        List<Announcement> optionalAnswersList = optionalUser.get().getAnswers();
-        List<Announcement> optionalNotificationsList = optionalUser.get().getNotifications();
+        // List<Announcement> optionalAnswersList = optionalUser.get().getAnswers();
+        // List<Announcement> optionalNotificationsList = optionalUser.get().getNotifications();
 
         if (optionalUser.isPresent() && optinalAnnouncement.isPresent()) {
 
@@ -159,8 +159,8 @@ public class AnnouncementController {
                     Announcement announcementToDelete = optinalAnnouncement.get();
 
                     optionalUserAnnouncementList.remove(userAnnoncementToDelete);
-                    optionalAnswersList.remove(userAnnoncementToDelete);
-                    optionalNotificationsList.remove(userAnnoncementToDelete);
+                    // optionalAnswersList.remove(userAnnoncementToDelete);
+                    // optionalNotificationsList.remove(userAnnoncementToDelete);
 
                     announcementToDelete.setUser(null);
 

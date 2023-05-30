@@ -1,3 +1,5 @@
+// Création de l'annotation @ValidPassword afin de pouvoir utiliser le validateur personnalisé PasswordValidator. 
+
 package com.back.projet3.validator;
 
 import java.lang.annotation.ElementType;

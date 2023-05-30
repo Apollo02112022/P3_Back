@@ -1,10 +1,10 @@
 package com.back.projet3.controller;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,6 @@ import com.back.projet3.entity.Notification;
 import com.back.projet3.entity.User;
 import com.back.projet3.repository.NotificationRepository;
 import com.back.projet3.repository.UserRepository;
-import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

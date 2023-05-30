@@ -1,9 +1,8 @@
 package com.back.projet3.entity;
 
-import com.back.projet3.validator.ValidName;
 import com.back.projet3.validator.ValidPassword;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import java.util.ArrayList;
+// import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -16,12 +15,13 @@ import lombok.Data;
 //@Data fait automatiquement les getter et setter via lombok (dépendence).
 
 @Data 
-@Entity // Table User
+@Entity
 @Table(name="user")
 
 // On utilise jsonignore pour ignorer les variables qui créent une boucle infinie.
 
-@JsonIgnoreProperties({"userAnnouncements", "userAnswers"})
+// @JsonIgnoreProperties({"userAnnouncements", "userAnswers"})
+@JsonIgnoreProperties({"userAnnouncements"})
 
 public class User {
 
@@ -67,19 +67,19 @@ public class User {
 
 // <----- Relation Many to Many concernant les tables user, announcement et notification ----->
 
-    @ManyToMany
-    @JoinTable(name = "answer",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "announcement_id", referencedColumnName = "id"))
-    private List<Announcement> answers = new ArrayList<>();
-    // => On liste les annonces qui ont une réponse.
+    // @ManyToMany
+    // @JoinTable(name = "answer",
+    //         joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+    //         inverseJoinColumns = @JoinColumn(name = "announcement_id", referencedColumnName = "id"))
+    // private List<Announcement> answers = new ArrayList<>();
+    // // => On liste les annonces qui ont une réponse.
 
-    @ManyToMany
-    @JoinTable(name = "answer",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "notification_id", referencedColumnName = "id"))
-    private List<Announcement> notifications = new ArrayList<>();
-    // => On liste les annonces qui ont une notification.
+    // @ManyToMany
+    // @JoinTable(name = "answer",
+    //         joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+    //         inverseJoinColumns = @JoinColumn(name = "notification_id", referencedColumnName = "id"))
+    // private List<Announcement> notifications = new ArrayList<>();
+    // // => On liste les annonces qui ont une notification.
 
 // <---------->
 

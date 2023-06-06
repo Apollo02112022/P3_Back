@@ -35,7 +35,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 @Validated
-
 public class UserController {
 
     @Autowired
@@ -207,10 +206,10 @@ public class UserController {
     }
 
 
-    @GetMapping("/users/{id}/profil") // api/users/{id}/profil GET Détails d’un utilisateur
-    public User findUser(@PathVariable Long id) {
+    @GetMapping("/users/{userid}/profil") // api/users/{id}/profil GET Détails d’un utilisateur
+    public User findUser(@PathVariable Long userid) {
 
-        return userRepository.findById(id).get();
+        return userRepository.findById(userid).get();
     }
 
     // verification du mdp de l'utilisateur, si il est correct return true sinon

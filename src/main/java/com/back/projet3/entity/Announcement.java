@@ -3,13 +3,8 @@ package com.back.projet3.entity;
 import java.sql.Timestamp;
 import javax.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
-
 import lombok.Data;
 
-// import java.util.List;
-// import java.util.ArrayList;
-
-// import com.back.projet3.entity.User;
 
 @Data
 @Entity
@@ -30,9 +25,5 @@ public class Announcement {
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
-
-    // @ManyToMany(mappedBy = "answers")
-    // private List<User> user_answers = new ArrayList<>();
-    // // => On liste les utilisateurs qui ont créé des réponses.
 
 }

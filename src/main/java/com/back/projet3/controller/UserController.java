@@ -63,17 +63,10 @@ public class UserController {
 
         User user = new User();
 
-        // System.out.println("@@@@@@@@@@" + userDto.getPassword());
-
-        // J'encode le mot de passe de ma classe UserDto et je l'attribue au mot de
-        // passe de ma classe User.
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String encodedPassword = encoder.encode(userDto.getPassword());
         user.setPassword(encodedPassword);
-
-        // J'attribue chacune des propriétés de ma classe UserDto à leur propriétés
-        // respectives de ma classe User.
 
         String lastname = userDto.getLastname();
         user.setLastname(lastname);
@@ -87,11 +80,9 @@ public class UserController {
         user.setCounty(county);
         String mail = userDto.getMail();
         user.setMail(mail);
-        // on met le role 
+        
         user.setRole("USER");
 
-        // Je vérifie si un utilisateur se réinscrit avec la même adresse mail et/ou le
-        // même pseudo.
 
         if (userRepository.findByMail(userDto.getMail()) != null) {
             return new ResponseEntity<>("Un utilisateur avec l'adresse e-mail " + userDto.getMail() + " existe déjà.",
@@ -104,7 +95,6 @@ public class UserController {
                     HttpStatus.CONFLICT);
         }
 
-        // Je modifie le format de la photo de l'utilisateur et je la compresse.
 
         byte[] pictureInByteForm;
 
@@ -115,7 +105,6 @@ public class UserController {
             e.printStackTrace();
         }
         
-        // J'enregistre le nouvel utilisateur.
 
         userRepository.save(user);
         return new ResponseEntity<>(user, HttpStatus.CREATED);
@@ -127,35 +116,17 @@ public class UserController {
     @GetMapping("/users/{id}/picture")
     public ResponseEntity<byte[]> getUserPictureById(@PathVariable Long id) {
 
-        // Utilisation du Repository de l'utilisateur pour rechercher l'utilisateur 
-        // correspondant à l'ID fourni dans la base de données. Le résultat est 
-        // stocké dans un objet Optional, car l'utilisateur peut ne pas exister dans 
-        // la BDD.
-
         Optional<User> userPicture = userRepository.findById(id);
 
-        // Extraction de l'utilisateur de l'objet Optional.
-
         User user = userPicture.get();
-
-        // Extraction de l'image de l'utilisateur stockée dans la BDD sous forme
-        // compressée.
 
         byte[] compressedPicture = user.getPicture();
         byte[] decompressedPicture;
 
-        // La méthode decompressImage de la classe ImageUtil est utilisée pour
-        // décompresser l'image.
-
         decompressedPicture = ImageUtil.decompressImage(compressedPicture);
-
-        // Création d'un objet HttpHeaders utilisé pour spécifier le type de contenu de
-        // la réponse (ici PNG).
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_PNG);
-
-        // Création d'un objet ResponseEntity contenant l'image décompressée.
 
         return new ResponseEntity<>(decompressedPicture, headers, HttpStatus.OK);
     }

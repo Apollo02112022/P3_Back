@@ -24,15 +24,7 @@ public class Config {
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    /**
-     * Une Session http sauvegarde des informations à propos d'un utilisateur
-     * (client login state, for example, plus whatever else the Web application
-     * needs to save)
-     * Si on laisse le session management actif alors qu'on a désactivé la
-     * protection CRSF on s'ouvre à des attaques CSRF
-     * d'ou la ligne 60 sessionManagement(session ->
-     * session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-     */
+ 
 
     http.cors().and().csrf().disable()
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -45,7 +37,7 @@ public class Config {
         .antMatchers("/users").hasRole("ADMIN")
         .anyRequest().authenticated(); 
         
-    // where to implement the middleware filter
+   
     http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     return http.build();
   }

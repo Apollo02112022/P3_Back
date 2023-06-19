@@ -10,12 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import com.back.projet3.repository.*;
 
-/**
- * 
- * Me permet d'avoir accès aux infos de l'utilisateur dans spring security.
- * CustomUserDetails : permet de charger l'utilisateur dans Spring Sécurtity, 
- * ce qui nous permet de récupérer les données de l'utilisateur, et gérer auth ect..
- */
+
 @Service
 public class CustomUserDetails implements UserDetailsService {
 

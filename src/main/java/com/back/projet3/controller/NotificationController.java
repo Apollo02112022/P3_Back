@@ -56,22 +56,10 @@ import java.io.IOException;
     notificationRepository.deleteById(id);
     return true;
 }
-// quelques exemples :
-// private List<String> array = new ArrayList();
-
-// obj: { name: string, age: number} = {
-//     name : "Laurie",
-//     age : 23,
-//   }
-//   arr: string[]= [ "Laurie", "Yvens" ]
-// string => clé
-// name => clé
 
 
 private final Map<String, SseEmitter> userEmitters = new ConcurrentHashMap<>();
-// variable privée accessible que dans cette classe, final car ne pas être modifié une fois qu'elle a été initialisée.
-// objet Map, clé String, SseEmitter, variable userEmitters.
-// ConcurrentHashMap est une impléméntation de Map.
+
 
 @PostMapping("/postMessage")
 // Méthode @postMapping qui sera appelé lors d'une requête http post avec url
@@ -137,17 +125,6 @@ private final Map<String, SseEmitter> userEmitters = new ConcurrentHashMap<>();
         return emitter;
     }
  
-
-    // @GetMapping("/users/{userid}/notifications")
-    // private List<Notification> notificationOfUserNotification (@PathVariable Long userId) {
-    //     userRepository.findById(userId);
-    //     Optional<User> userNotif = userRepository.findById(userId);
-    //     if (userNotif.isPresent()) {
-    //         return userNotif.get().getUserNotification();
-    //     } else {
-    //         return null;
-    //     }         
-    // }
-    }
+}
 
 

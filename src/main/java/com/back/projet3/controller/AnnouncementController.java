@@ -34,12 +34,6 @@ public class AnnouncementController {
     private AnnouncementRepository announcementRepository;
     @Autowired
     private UserRepository userRepository;
-   
-    // // READ
-    // @GetMapping("/offer-a-barter") // api/Announcements GET Liste des annonces
-    // public ResponseEntity<?> getAnnouncements() {
-    //     return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    // }
     
     // CREATE
     @PostMapping("/offer-a-barter")
@@ -148,8 +142,7 @@ public class AnnouncementController {
         Optional<User> optionalUser = userRepository.findById(userid);
         Optional<Announcement> optinalAnnouncement = announcementRepository.findById(annoucementid);
         List<Announcement> optionalUserAnnouncementList = optionalUser.get().getUserAnnouncements();
-        // List<Announcement> optionalAnswersList = optionalUser.get().getAnswers();
-        // List<Announcement> optionalNotificationsList = optionalUser.get().getNotifications();
+    
 
         if (optionalUser.isPresent() && optinalAnnouncement.isPresent()) {
 
@@ -159,8 +152,6 @@ public class AnnouncementController {
                     Announcement announcementToDelete = optinalAnnouncement.get();
 
                     optionalUserAnnouncementList.remove(userAnnoncementToDelete);
-                    // optionalAnswersList.remove(userAnnoncementToDelete);
-                    // optionalNotificationsList.remove(userAnnoncementToDelete);
 
                     announcementToDelete.setUser(null);
 

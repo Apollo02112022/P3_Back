@@ -24,7 +24,7 @@ public class JwtGenerator {
 
     Claims claims = Jwts.claims().setSubject(pseudo);
     claims.put("userId", id);
-    claims.put("pseudo",pseudo);
+    // claims.put("pseudo",pseudo);
     claims.put("role",role);
     Date currentDate = new Date();
     Date expireDate = new Date(currentDate.getTime() + 86400000);
